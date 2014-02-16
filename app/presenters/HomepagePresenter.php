@@ -58,33 +58,48 @@ class HomepagePresenter extends BasePresenter
 
         } else {
             if (!empty($vals['vusc'])) {
-                $form['okres']->setItems($this->ruian->getOkresPairs($vals['vusc']));
+                $okresy = $this->ruian->getOkresPairs($vals['vusc']);
+		$form['okres']->setItems($okresy);
+		if (count($okresy)==1) {
+			$form['okres']->setValue(key($okresy));
+		}
+		$form['okres']->setAttribute('hidden',false);
                 $this->hranice = $this->ruian->getVuscHranice($vals['vusc']);
 
                 $vals = $form->getValues();
             }
             if (!empty($vals['okres'])) {
-                $form['obec']->setItems($this->ruian->getObecPairs($vals['okres']));
+		$obce = $this->ruian->getObecPairs($vals['okres']);
+		$form['obec']->setItems($obce);
+		if (count($obce)==1) {
+			$form['obec']->setValue(key($obce));
+		}
+		$form['obec']->setAttribute('hidden',false);
                 $this->hranice = $this->ruian->getOkresHranice($vals['okres']);
 
                 $vals = $form->getValues();
             }
             if (!empty($vals['obec'])) {
-                $form['ulice']->setItems($this->ruian->getUlicePairs($vals['obec']));
-                $this->hranice = $this->ruian->getObecHranice($vals['obec']);
-
+                $ulice = $this->ruian->getUlicePairs($vals['obec']);
+		if (count($ulice)>1) {
+			$form['ulice']->setAttribute('hidden',false);
+			$form['ulice']->setItems($ulice);
+		}
                 $vals = $form->getValues();
-            }
-            if (!empty($vals['ulice'])) {
-                $form['okrsek']->setItems($this->ruian->getOkrsekPairs($vals['ulice']));
-                $this->hranice = $this->ruian->getUliceHranice($vals['ulice']);
+                $okrsky = $this->ruian->getOkrsekPairs($vals['obec'],$vals['ulice']);
+		$form['okrsek']->setAttribute('hidden',false);
+		$form['okrsek']->setItems($okrsky);
+		if (count($okrsky)==1) {
+			$form['okrsek']->setValue(key($okrsky));
+		}
+                $this->hranice = $this->ruian->getObecHranice($vals['obec']);
 
                 $vals = $form->getValues();
             }
             if (!empty($vals['okrsek'])) {
                 $this->template->okrsek = $this->ruian->getOkrsekHranice($vals['okrsek']);
                 $this->hranice = $this->ruian->getOkrsekHranice($vals['okrsek']);
-
+		$form['send_okrsek']->setAttribute('hidden', false);
             }
             $this->redrawControl('prihlaseni2');
             $this->redrawControl('mapa');

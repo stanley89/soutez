@@ -26,8 +26,8 @@ $('#frm-prihlaseni2 select').change(function() {
         <div id="m" style="height:380px"></div>
 
         <script type="text/javascript">
-        var center = SMap.Coords.fromWGS84(14.41790, 50.12655);
-        var m = new SMap(JAK.gel("m"), center, 5);
+        var center = SMap.Coords.fromWGS84(16, 50);
+        var m = new SMap(JAK.gel("m"), center, 4);
         m.addDefaultLayer(SMap.DEF_BASE).enable();
         m.addDefaultControls();
 
@@ -51,7 +51,7 @@ var options2 = {
 };
 var polygon = new SMap.Geometry(SMap.GEOMETRY_POLYGON, null, points2, options2);
 var cz = m.computeCenterZoom(points2);
-m.setCenterZoom(cz[0], cz[1] - 1);
+m.setCenterZoom(cz[0], cz[1] );
 m.computeCenterZoom(polygon);
 layer.addGeometry(polygon);
 </script>

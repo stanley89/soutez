@@ -27,10 +27,16 @@ class Ruian {
     public function getUlicePairs($obec_kod) {
         return $this->db->fetchPairs("SELECT kod,nazev FROM rn_ulice WHERE obec_kod=? ORDER BY nazev;",$obec_kod);
     }
-    public function getOkrsekPairs($ulice_kod) {
-        return $this->db->fetchPairs("SELECT rn_volebni_okrsek.kod,rn_volebni_okrsek.cislo FROM rn_ulice, rn_volebni_okrsek
-        WHERE rn_ulice.kod=? AND ST_Intersects(rn_ulice.definicni_cara,rn_volebni_okrsek.hranice)
-        ORDER BY cislo;",$ulice_kod);
+    public function getOkrsekPairs($obec_kod, $ulice_kod) {
+	if (empty($ulice_kod)) {
+	        return $this->db->fetchPairs("SELECT rn_volebni_okrsek.kod,rn_volebni_okrsek.cislo FROM rn_volebni_okrsek
+        	WHERE obec_kod=? 
+	        ORDER BY cislo;",$obec_kod);
+	} else {
+	        return $this->db->fetchPairs("SELECT o.kod,o.cislo FROM rn_ulice u, rn_volebni_okrsek o
+        	WHERE o.obec_kod=? AND u.kod=? AND ST_Intersects(u.definicni_cara,o.hranice)
+	        ORDER BY cislo;",$obec_kod,$ulice_kod);
+	}
     }
     public function getStatHranice() {
         return $this->db->fetchField("SELECT ST_AsText(ST_Transform(hranice, 4326)) FROM rn_stat;");
