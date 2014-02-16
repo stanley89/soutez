@@ -180,8 +180,8 @@ class HomepagePresenter extends BasePresenter
     public function actionPrihlaseni2() {
         if ($this->section->body>2) {
         } else {
-//            $this->flashMessage("Tvoje odpovědi nestačí pro účast v soutěži. Můžeš to ale zkusit znovu.");
-//            $this->redirect("prihlaseni");
+            $this->flashMessage("Tvoje odpovědi nestačí pro účast v soutěži. Můžeš to ale zkusit znovu.");
+            $this->redirect("prihlaseni");
         }
         //$this->hranice = $this->ruian->getStatHranice();
     }
