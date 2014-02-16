@@ -31,11 +31,11 @@ class HomepagePresenter extends BasePresenter
     protected function createComponentPrihlaseni2() {
         $form = new \Nette\Application\UI\Form();
         $form->addSelect("vusc", "Kraj", $this->ruian->getVuscPairs())->setPrompt("-- vyber kraj --");
-        $form->addSelect("okres", "Okres" )->setPrompt("-- vyber okres --");
-        $form->addSelect("obec", "Obec" )->setPrompt("-- vyber obec --");
-        $form->addSelect("ulice", "Ulice" )->setPrompt("-- vyber ulici --");
-        $form->addSelect("okrsek", "Okrsek")->setPrompt("-- vyber číslo okrsku --");
-        $form->addSubmit("send_okrsek", "Odeslat");
+        $form->addSelect("okres", "Okres" )->setPrompt("-- vyber okres --")->setAttribute("hidden");
+        $form->addSelect("obec", "Obec" )->setPrompt("-- vyber obec --")->setAttribute("hidden");
+        $form->addSelect("ulice", "Ulice" )->setPrompt("-- vyber ulici --")->setAttribute("hidden");
+        $form->addSelect("okrsek", "Okrsek")->setPrompt("-- vyber číslo okrsku --")->setAttribute("hidden");
+        $form->addSubmit("send_okrsek", "Odeslat")->setAttribute("hidden");
 
         $form->onSuccess[] = callback($this, "okrsek");
         return $form;
@@ -98,7 +98,7 @@ class HomepagePresenter extends BasePresenter
             $this->flashMessage("Tvoje odpovědi nestačí pro účast v soutěži. Můžeš to ale zkusit znovu.");
             $this->redirect("prihlaseni");
         }
-        $this->hranice = $this->ruian->getStatHranice();
+        //$this->hranice = $this->ruian->getStatHranice();
     }
     public function renderPrihlaseni2() {
         if (!empty($this->hranice)) {
