@@ -11,9 +11,12 @@ use Nette,
 class HomepagePresenter extends BasePresenter
 {
     private $section;
+    private $db;
 
-    public function __construct(\Nette\Http\Session $session) {
+    public function __construct(\Nette\Http\Session $session, \Nette\Database\Context $db) {
         $this->section = $session->getSection("soutez");
+        $this->db = $db;
+        dump($db->fetchAll("SELECT * FROM rn_vusc;"));
     }
     protected function createComponentPrihlaseni() {
         $form = new \Nette\Application\UI\Form();
