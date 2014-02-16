@@ -73,4 +73,10 @@ class Ruian {
         $hranice = explode(",",$hranice);
         return $hranice;
     }
+    public function getOkrsek($kod) {
+        return $this->db->fetch("SELECT * FROM rn_volebni_okrsek WHERE kod=?;",$kod);
+    }
+    public function getObec($kod) {
+        return $this->db->fetch("SELECT * FROM rn_obec WHERE kod=?;",$kod);
+    }
 } 

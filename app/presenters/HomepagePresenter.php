@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Presenters;
+use Nette\Mail\SendmailMailer;
 
 use Nette,
 	App\Model;
-
+use Nette\Application\UI\Form;
 /**
  * Homepage presenter.
  */
@@ -13,10 +14,14 @@ class HomepagePresenter extends BasePresenter
     private $section;
     private $ruian;
     private $hranice;
+    private $prihlasky;
+    private $mailer;
 
-    public function __construct(\Nette\Http\Session $session, \App\Ruian $ruian) {
+    public function __construct(\Nette\Http\Session $session, \App\Ruian $ruian, \App\Prihlasky $prihlasky, \Nette\Mail\SendmailMailer $mailer) {
         $this->section = $session->getSection("soutez");
         $this->ruian = $ruian;
+        $this->prihlasky = $prihlasky;
+        $this->mailer = $mailer;
     }
     protected function createComponentPrihlaseni() {
         $form = new \Nette\Application\UI\Form();
@@ -25,6 +30,13 @@ class HomepagePresenter extends BasePresenter
         $form->addRadioList("otazka3", "Otázka na možnost 3",array(1 => "Možnost 1", "Možnost 2", "Možnost 3"));
         $form->addRadioList("otazka4", "Otázka na možnost 3",array(1 => "Možnost 1", "Možnost 2", "Možnost 3"));
         $form->addSubmit("send_quiz", "Odeslat");
+
+        $renderer = $form->getRenderer();
+        $renderer->wrappers['controls']['container'] = 'dl';
+        $renderer->wrappers['pair']['container'] = NULL;
+        $renderer->wrappers['label']['container'] = 'dt';
+        $renderer->wrappers['control']['container'] = 'dd';
+
         $form->onSuccess[] = callback($this, "quiz");
         return $form;
     }
@@ -40,6 +52,24 @@ class HomepagePresenter extends BasePresenter
         $form->onSuccess[] = callback($this, "okrsek");
         return $form;
     }
+    protected function createComponentPrihlaseni3() {
+        $form = new \Nette\Application\UI\Form();
+        $form->addHidden("okrsek", $this->section->okrsek);
+        $form->addText("jmeno", "Jméno a příjmení")->addRule(Form::FILLED, "Vyplň prosím jméno.");
+        $form->addText("ulice", "Ulice a ČP")->addRule(Form::FILLED, "Vyplň prosím ulici.");
+        $form->addText("obec", "Obec")->addRule(Form::FILLED, "Vyplň prosím obec.");
+        $form->addText("psc", "PSČ")->addRule(Form::FILLED, "Vyplň prosím PSČ.");
+        $form->addText("telefon", "Telefon")->addRule(Form::FILLED, "Vyplň prosím telefon.");
+        $form->addText("email", 'E-mail')->addRule(Form::FILLED, "Vyplň prosím e-mail.")
+            ->addRule(Form::EMAIL, "Vyplň prosím platný e-mail.");
+        $form->addCheckbox("checkbox1", "Jsem starší 15 let.")->addRule(Form::FILLED, "Pro účast v soutěži musíš být starší než 15 let.");
+        $form->addCheckbox("checkbox2", "Souhlasím s pravidly soutěže.")->addRule(Form::FILLED, "Pro účast v soutěži je třeba souhlasit s pravidly.");
+        $form->addCheckbox("agree", "Chci zůstat v databázi příznivců.");
+        $form->addSubmit("send_address", "Potvrdit přihlášku");
+
+        $form->onSuccess[] = callback($this, "address");
+        return $form;
+    }
 
     public function quiz($form) {
         $vals = $form->getValues();
@@ -49,15 +79,16 @@ class HomepagePresenter extends BasePresenter
         if ($vals["otazka3"]==3) $body++;
         if ($vals["otazka4"]==3) $body++;
         $this->section->body = $body;
+        if ($body>2) {
+            $this->flashMessage("Gratuluji, prošel jsi vědomostním testem pro účast v soutěži. Nyní si vyber okrsek, ve kterém budeš dělat kampaň.");
+        }
         $this->redirect("prihlaseni2");
 
     }
     public function okrsek($form) {
         $vals = $form->getValues();
-        if ($form['send_okrsek']->isSubmittedBy()) {
 
-        } else {
-            if (!empty($vals['vusc'])) {
+        if (!empty($vals['vusc'])) {
                 $okresy = $this->ruian->getOkresPairs($vals['vusc']);
 		$form['okres']->setItems($okresy);
 		if (count($okresy)==1) {
@@ -67,8 +98,9 @@ class HomepagePresenter extends BasePresenter
                 $this->hranice = $this->ruian->getVuscHranice($vals['vusc']);
 
                 $vals = $form->getValues();
-            }
-            if (!empty($vals['okres'])) {
+        }
+
+        if (!empty($vals['okres'])) {
 		$obce = $this->ruian->getObecPairs($vals['okres']);
 		$form['obec']->setItems($obce);
 		if (count($obce)==1) {
@@ -96,19 +128,57 @@ class HomepagePresenter extends BasePresenter
 
                 $vals = $form->getValues();
             }
-            if (!empty($vals['okrsek'])) {
-                $this->template->okrsek = $this->ruian->getOkrsekHranice($vals['okrsek']);
-                $this->hranice = $this->ruian->getOkrsekHranice($vals['okrsek']);
-		$form['send_okrsek']->setAttribute('hidden', false);
+        if (!empty($vals['okrsek'])) {
+            $this->template->okrsek = $this->ruian->getOkrsekHranice($vals['okrsek']);
+            $this->hranice = $this->ruian->getOkrsekHranice($vals['okrsek']);
+            if ($this->prihlasky->getByKod($vals['okrsek'])) {
+                $this->template->message = "Vybraný okrsek je bohužel už obsazený. Pokud se chceš zapojit do soutěže, vyber si prosím jiný.";
+            } else {
+                $form['send_okrsek']->setAttribute('hidden', false);
+                $this->template->message = "Vybraný okrsek je volný! Rychle pokračuj na další krok registrace, ať jej neobsadí někdo jiný.";
             }
-            $this->redrawControl('prihlaseni2');
-            $this->redrawControl('mapa');
-
         }
+        $this->redrawControl('prihlaseni2');
+        $this->redrawControl('mapa');
+
+        if ($form['send_okrsek']->isSubmittedBy()) {
+            $okrsek = $this->ruian->getOkrsek($vals['okrsek']);
+            $obec = $this->ruian->getObec($okrsek['obec_kod']);
+            if ($this->prihlasky->getByKod($vals['okrsek'])) {
+                $this->flashMessage("Tento okrsek je už zabraný. Vyberte si prosím jiný okrsek.");
+            } else {
+                $this->flashMessage("Úspěšně jsi vybral okrsek ".$obec['nazev']." (".$okrsek['cislo']."). Teď už zbývá jen vyplnit své údaje.");
+                $this->section->okrsek = $vals['okrsek'];
+                $this->redirect("prihlaseni3");
+            }
+        }
+    }
+    public function address($form) {
+        $vals = $form->getValues();
+        $id = $this->prihlasky->add($vals);
+        $template = new Nette\Templating\FileTemplate(__DIR__.'/../templates/Homepage/@email.latte');
+        $template->registerFilter(new Nette\Latte\Engine);
+        $template->registerHelperLoader('Nette\Templating\Helpers::loader');
+        $template->vals = $vals;
+
+        $mail = new \Nette\Mail\Message;
+        $mail->setFrom('soutez@pirati.cz')
+            ->addTo($vals['email'])
+            ->addBcc("stanislav.stipl@pirati.cz")
+            ->setHtmlBody($template);
+
+
+        $this->mailer->send($mail);
+
+        if (!empty($id)) {
+            $this->flashMessage("Tvoje přihlášení do soutěže proběhlo úspěšně. Na e-mail ti přijdou podrobnější pokyny a materiály.");
+        } else {
+            $this->flashMessage("Přihlášení se bohužel nezdařilo. Když všechno selže, napiš na stanislav.stipl@pirati.cz");
+        }
+        $this->redirect("prihlaseni4");
     }
     public function actionPrihlaseni2() {
         if ($this->section->body>2) {
-            $this->flashMessage("Gratuluji, prošel jsi vědomostním testem pro účast v soutěži. Nyní si vyber okrsek, ve kterém budeš dělat kampaň.");
         } else {
             $this->flashMessage("Tvoje odpovědi nestačí pro účast v soutěži. Můžeš to ale zkusit znovu.");
             $this->redirect("prihlaseni");
@@ -119,6 +189,12 @@ class HomepagePresenter extends BasePresenter
         if (!empty($this->hranice)) {
             $this->template->hranice = $this->ruian->convertHranice($this->hranice);
         }
+    }
+    public function actionPrihlaseni3() {
+        $okrsek = $this->ruian->getOkrsek($this->section->okrsek);
+        $obec = $this->ruian->getObec($okrsek['obec_kod']);
+        $this->template->okrsek = $okrsek;
+        $this->template->obec = $obec;
     }
 	public function renderDefault()
 	{

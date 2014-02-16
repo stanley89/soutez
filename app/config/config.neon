@@ -23,8 +23,10 @@ nette:
 
 
 services:
-	database: @nette.database.default
 	- App\UserManager
 	- App\RouterFactory
-	- App\Ruian
+	ruian:
+		class: App\Ruian
+		arguments: ['@nette.database.ruian.context']
+	- App\Prihlasky
 	router: @App\RouterFactory::createRouter
