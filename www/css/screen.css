@@ -88,3 +88,11 @@ html.js .jshidden {
 .clear {
     clear: both;
 }
+#snippet--prihlaseni2 {
+    width: 50%;
+    float:left;
+}
+#m {
+    width: 50%;
+    float:left;
+}

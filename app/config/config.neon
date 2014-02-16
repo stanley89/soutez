@@ -23,6 +23,8 @@ nette:
 
 
 services:
+	database: @nette.database.default
 	- App\UserManager
 	- App\RouterFactory
+	- App\Ruian
 	router: @App\RouterFactory::createRouter

@@ -3,5 +3,58 @@
 {/block}
 
 {block content}
+{snippet prihlaseni2}
 {control prihlaseni2}
+
+<script type="text/javascript">
+$(function() {
+form = $('#frm-prihlaseni2');
+$('#frm-prihlaseni2 select').change(function() {
+    $.ajax( {
+      type: "POST",
+      url: form.attr( 'action' ),
+      data: form.serialize(),
+
+    } );});
+    });
+</script>
+{/snippet}
+    <script type="text/javascript" src="http://api4.mapy.cz/loader.js"></script>
+    <script type="text/javascript">Loader.load();</script>
+
+
+        <div id="m" style="height:380px"></div>
+
+        <script type="text/javascript">
+        var center = SMap.Coords.fromWGS84(14.41790, 50.12655);
+        var m = new SMap(JAK.gel("m"), center, 13);
+        m.addDefaultLayer(SMap.DEF_BASE).enable();
+        m.addDefaultControls();
+
+        var layer = new SMap.Layer.Geometry();
+        m.addLayer(layer);
+        layer.enable();
+        </script>
+{snippet mapa}
+<script type="text/javascript">
+layer.removeAll();
+var points2 = [
+{ifset $hranice}
+{foreach $hranice as $bod}
+{? $coords = explode(" ",$bod)}
+    SMap.Coords.fromWGS84({$coords[0]}, {$coords[1]}),
+    {/foreach}
+{/ifset}
+];
+var options2 = {
+    color: "#00f"
+};
+var polygon = new SMap.Geometry(SMap.GEOMETRY_POLYGON, null, points2, options2);
+var cz = m.computeCenterZoom(points2);
+m.setCenterZoom(cz[0], cz[1] - 1);
+m.computeCenterZoom(polygon);
+layer.addGeometry(polygon);
+</script>
+{/snippet}
+
 {/block}
