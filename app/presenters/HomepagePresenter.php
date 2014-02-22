@@ -59,12 +59,14 @@ class HomepagePresenter extends BasePresenter
         $form->addText("ulice", "Ulice a ČP")->addRule(Form::FILLED, "Vyplň prosím ulici.");
         $form->addText("obec", "Obec")->addRule(Form::FILLED, "Vyplň prosím obec.");
         $form->addText("psc", "PSČ")->addRule(Form::FILLED, "Vyplň prosím PSČ.");
-        $form->addText("telefon", "Telefon")->addRule(Form::FILLED, "Vyplň prosím telefon.");
+        $form->addText("telefon", "Telefon")->addRule(Form::FILLED, "Vyplň prosím telefon.")->addRule(Form::PATTERN, "Telefon musí mít 9 číslic.",'([0-9]\s*){9}');
         $form->addText("email", 'E-mail')->addRule(Form::FILLED, "Vyplň prosím e-mail.")
             ->addRule(Form::EMAIL, "Vyplň prosím platný e-mail.");
         $form->addCheckbox("checkbox1", "Jsem starší 15 let.")->addRule(Form::FILLED, "Pro účast v soutěži musíš být starší než 15 let.");
         $form->addCheckbox("checkbox2", "Souhlasím s pravidly soutěže.")->addRule(Form::FILLED, "Pro účast v soutěži je třeba souhlasit s pravidly.");
-        $form->addCheckbox("agree", "Chci zůstat v databázi příznivců.");
+        $form->addCheckbox("agree", "Chci zůstat v databázi příznivců.")->setValue(true);
+        $form->addText("referer", "Referenční číslo")->addCondition(Form::FILLED)->addRule(Form::PATTERN, "Pokud vyplňuješ referenční číslo, musí mít 9 číslic.",'([0-9]\s*){9}');
+
         $form->addSubmit("send_address", "Potvrdit přihlášku");
 
         $form->onSuccess[] = callback($this, "address");
@@ -101,33 +103,35 @@ class HomepagePresenter extends BasePresenter
         }
 
         if (!empty($vals['okres'])) {
-		$obce = $this->ruian->getObecPairs($vals['okres']);
-		$form['obec']->setItems($obce);
-		if (count($obce)==1) {
-			$form['obec']->setValue(key($obce));
-		}
-		$form['obec']->setAttribute('hidden',false);
-                $this->hranice = $this->ruian->getOkresHranice($vals['okres']);
-
-                $vals = $form->getValues();
-            }
-            if (!empty($vals['obec'])) {
-                $ulice = $this->ruian->getUlicePairs($vals['obec']);
-		if (count($ulice)>1) {
-			$form['ulice']->setAttribute('hidden',false);
-			$form['ulice']->setItems($ulice);
-		}
-                $vals = $form->getValues();
-                $okrsky = $this->ruian->getOkrsekPairs($vals['obec'],$vals['ulice']);
-		$form['okrsek']->setAttribute('hidden',false);
-		$form['okrsek']->setItems($okrsky);
-		if (count($okrsky)==1) {
-			$form['okrsek']->setValue(key($okrsky));
-		}
+		    $obce = $this->ruian->getObecPairs($vals['okres']);
+		    $form['obec']->setItems($obce);
+		    if (count($obce)==1) {
+			    $form['obec']->setValue(key($obce));
+		    }
+		    $form['obec']->setAttribute('hidden',false);
+            $this->hranice = $this->ruian->getOkresHranice($vals['okres']);
+            $vals = $form->getValues();
+        }
+        if (!empty($vals['obec'])) {
+            $ulice = $this->ruian->getUlicePairs($vals['obec']);
+    		if (count($ulice)>1) {
+	    		$form['ulice']->setAttribute('hidden',false);
+		    	$form['ulice']->setItems($ulice);
+		    }
+            $vals = $form->getValues();
+            $okrsky = $this->ruian->getOkrsekPairs($vals['obec'],$vals['ulice']);
+		    $form['okrsek']->setAttribute('hidden',false);
+		    $form['okrsek']->setItems($okrsky);
+		    if (count($okrsky)==1) {
+			    $form['okrsek']->setValue(key($okrsky));
+		    }
+            $vals = $form->getValues();
+            if (!empty($vals['ulice'])) {
+                $this->hranice = $this->ruian->getOkrskyHraniceUlice($vals['ulice']);
+            } else {
                 $this->hranice = $this->ruian->getObecHranice($vals['obec']);
-
-                $vals = $form->getValues();
             }
+        }
         if (!empty($vals['okrsek'])) {
             $this->template->okrsek = $this->ruian->getOkrsekHranice($vals['okrsek']);
             $this->hranice = $this->ruian->getOkrsekHranice($vals['okrsek']);

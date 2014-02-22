@@ -66,6 +66,12 @@ class Ruian {
               FROM rn_volebni_okrsek
               WHERE kod = ?;",$okrsek_kod);
     }
+    public function getOkrskyHraniceUlice($ulice_kod) {
+        return $this->db->fetchField("SELECT ST_ASText(ST_Transform(ST_Union(o.hranice), 4326))
+              FROM rn_volebni_okrsek o, rn_ulice u
+              WHERE ST_Intersects(o.hranice, u.definicni_cara) AND u.kod=?;
+        ",$ulice_kod);
+    }
     public function convertHranice($hranice) {
         $hranice = str_replace("MULTIPOLYGON","",$hranice);
         $hranice = str_replace("(((","",$hranice);
