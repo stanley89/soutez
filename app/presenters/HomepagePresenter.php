@@ -65,7 +65,7 @@ class HomepagePresenter extends BasePresenter
         $form->addCheckbox("checkbox1", "Jsem starší 15 let.")->addRule(Form::FILLED, "Pro účast v soutěži musíš být starší než 15 let.");
         $form->addCheckbox("checkbox2", "Souhlasím s pravidly soutěže.")->addRule(Form::FILLED, "Pro účast v soutěži je třeba souhlasit s pravidly.");
         $form->addCheckbox("agree", "Chci zůstat v databázi příznivců.")->setValue(true);
-        $form->addText("referer", "Referenční číslo")->addCondition(Form::FILLED)->addRule(Form::PATTERN, "Pokud vyplňuješ referenční číslo, musí mít 9 číslic.",'([0-9]\s*){9}');
+        $form->addText("referer", "Referenční číslo (nepovinné)")->addCondition(Form::FILLED)->addRule(Form::PATTERN, "Pokud vyplňuješ referenční číslo, musí mít 9 číslic.",'([0-9]\s*){9}');
 
         $form->addSubmit("send_address", "Potvrdit přihlášku");
 
