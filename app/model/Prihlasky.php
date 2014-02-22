@@ -17,7 +17,7 @@ class Prihlasky {
     }
 
     public function getByKod($kod) {
-        return $this->db->fetch("SELECT * FROM prihlasky WHERE okrsek=?",$kod);
+        return $this->db->fetchAll("SELECT * FROM prihlasky WHERE okrsek=?",$kod);
     }
 
     public function add($vals) {
@@ -33,5 +33,8 @@ class Prihlasky {
         );
         $this->db->query("INSERT INTO prihlasky ",$arr);
         return $this->db->getInsertId();
+    }
+    public function isLocked($kod) {
+        return $this->db->fetchField("SELECT locked FROM prihlasky WHERE okrsek=? AND locked=1;",$kod);
     }
 }

@@ -131,11 +131,22 @@ class HomepagePresenter extends BasePresenter
         if (!empty($vals['okrsek'])) {
             $this->template->okrsek = $this->ruian->getOkrsekHranice($vals['okrsek']);
             $this->hranice = $this->ruian->getOkrsekHranice($vals['okrsek']);
-            if ($this->prihlasky->getByKod($vals['okrsek'])) {
-                $this->template->message = "Vybraný okrsek je bohužel už obsazený. Pokud se chceš zapojit do soutěže, vyber si prosím jiný.";
+            if ($this->prihlasky->isLocked($vals['okrsek'])) {
+                $this->template->message = "Vybraný okrsek je bohužel už obsazený a zamčený. Pokud se chceš zapojit do soutěže, vyber si prosím jiný.";
+            }
+            $prihlaseni = $this->prihlasky->getByKod($vals['okrsek']);
+            $this->template->prihlaseni = $prihlaseni;
+            if ($prihlaseni) {
+                if (count($prihlaseni)==1) {
+                    $this->template->message = "Vybraný okrsek je obsazený, ale ještě není uzamčený. V okrsku je přihlášen 1 účastník soutěže. Přihlaš se do okrsku, pošli důkaz o kampani dřív než on a okrsek bude tvůj!";
+                } elseif (count($prihlaseni)<5) {
+                    $this->template->message = "Vybraný okrsek je obsazený, ale ještě není uzamčený. V okrsku jsou přihlášeni ".count($prihlaseni)." účastníci soutěže. Přihlaš se do okrsku, pošli důkaz o kampani dřív než oni a okrsek bude tvůj!";
+                } else {
+                    $this->template->message = "Vybraný okrsek je obsazený, ale ještě není uzamčený. V okrsku je přihlášeno ".count($prihlaseni)." účastníků soutěže. Přihlaš se do okrsku, pošli důkaz o kampani dřív než oni a okrsek bude tvůj!";
+                }
             } else {
                 $form['send_okrsek']->setAttribute('hidden', false);
-                $this->template->message = "Vybraný okrsek je volný! Rychle pokračuj na další krok registrace, ať jej neobsadí někdo jiný.";
+                $this->template->message = "Vybraný okrsek je volný! Rychle se přihlaš a pošli důkaz o kampani, ať jej neobsadí někdo jiný.";
             }
         }
         $this->redrawControl('prihlaseni2');
@@ -144,8 +155,8 @@ class HomepagePresenter extends BasePresenter
         if ($form['send_okrsek']->isSubmittedBy()) {
             $okrsek = $this->ruian->getOkrsek($vals['okrsek']);
             $obec = $this->ruian->getObec($okrsek['obec_kod']);
-            if ($this->prihlasky->getByKod($vals['okrsek'])) {
-                $this->flashMessage("Tento okrsek je už zabraný. Vyberte si prosím jiný okrsek.");
+            if ($this->prihlasky->isLocked($vals['okrsek'])) {
+                $this->flashMessage("Tento okrsek je už zamčený. Vyberte si prosím jiný okrsek.");
             } else {
                 $this->flashMessage("Úspěšně jsi vybral okrsek ".$obec['nazev']." (".$okrsek['cislo']."). Teď už zbývá jen vyplnit své údaje.");
                 $this->section->okrsek = $vals['okrsek'];
