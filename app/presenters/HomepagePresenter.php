@@ -131,11 +131,10 @@ class HomepagePresenter extends BasePresenter
         if (!empty($vals['okrsek'])) {
             $this->template->okrsek = $this->ruian->getOkrsekHranice($vals['okrsek']);
             $this->hranice = $this->ruian->getOkrsekHranice($vals['okrsek']);
-            $form['send_okrsek']->setAttribute('hidden', true);
-
+            $form['send_okrsek']->setAttribute('hidden', false);
             if ($this->prihlasky->isLocked($vals['okrsek'])) {
                 $this->template->message = "Vybraný okrsek je bohužel už obsazený a zamčený. Pokud se chceš zapojit do soutěže, vyber si prosím jiný.";
-                $form['send_okrsek']->setAttribute('hidden', false);
+                $form['send_okrsek']->setAttribute('hidden', true);
             }
             $prihlaseni = $this->prihlasky->getByKod($vals['okrsek']);
             $this->template->prihlaseni = $prihlaseni;
