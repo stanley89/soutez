@@ -10,7 +10,7 @@ namespace App\Presenters;
 
 
 class ServicePresenter extends BasePresenter {
-    public function actionPost() {
+    public function actionTelfa() {
         print_r($this->getHttpRequest()->getPost());
         $this->terminate();
     }
