@@ -131,8 +131,11 @@ class HomepagePresenter extends BasePresenter
         if (!empty($vals['okrsek'])) {
             $this->template->okrsek = $this->ruian->getOkrsekHranice($vals['okrsek']);
             $this->hranice = $this->ruian->getOkrsekHranice($vals['okrsek']);
+            $form['send_okrsek']->setAttribute('hidden', true);
+
             if ($this->prihlasky->isLocked($vals['okrsek'])) {
                 $this->template->message = "Vybraný okrsek je bohužel už obsazený a zamčený. Pokud se chceš zapojit do soutěže, vyber si prosím jiný.";
+                $form['send_okrsek']->setAttribute('hidden', false);
             }
             $prihlaseni = $this->prihlasky->getByKod($vals['okrsek']);
             $this->template->prihlaseni = $prihlaseni;
@@ -145,7 +148,6 @@ class HomepagePresenter extends BasePresenter
                     $this->template->message = "Vybraný okrsek je obsazený, ale ještě není uzamčený. V okrsku je přihlášeno ".count($prihlaseni)." účastníků soutěže. Přihlaš se do okrsku, pošli důkaz o kampani dřív než oni a okrsek bude tvůj!";
                 }
             } else {
-                $form['send_okrsek']->setAttribute('hidden', false);
                 $this->template->message = "Vybraný okrsek je volný! Rychle se přihlaš a pošli důkaz o kampani, ať jej neobsadí někdo jiný.";
             }
         }
