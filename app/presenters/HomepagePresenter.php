@@ -15,13 +15,11 @@ class HomepagePresenter extends BasePresenter
     private $ruian;
     private $hranice;
     private $prihlasky;
-    private $mailer;
 
-    public function __construct(\Nette\Http\Session $session, \App\Ruian $ruian, \App\Prihlasky $prihlasky, \Nette\Mail\SendmailMailer $mailer) {
+    public function __construct(\Nette\Http\Session $session, \App\Ruian $ruian, \App\Prihlasky $prihlasky) {
         $this->section = $session->getSection("soutez");
         $this->ruian = $ruian;
         $this->prihlasky = $prihlasky;
-        $this->mailer = $mailer;
     }
     protected function createComponentPrihlaseni() {
         $form = new \Nette\Application\UI\Form();
@@ -55,17 +53,17 @@ class HomepagePresenter extends BasePresenter
     protected function createComponentPrihlaseni3() {
         $form = new \Nette\Application\UI\Form();
         $form->addHidden("okrsek", $this->section->okrsek);
-        $form->addText("jmeno", "Jméno a příjmení")->addRule(Form::FILLED, "Vyplň prosím jméno.");
-        $form->addText("ulice", "Ulice a ČP")->addRule(Form::FILLED, "Vyplň prosím ulici.");
+        $form->addText("jmeno", "Jméno a příjmení")->addRule(Form::FILLED, "Vyplň prosím jméno a příjmení.");
+        $form->addText("ulice", "Ulice a ČP")->addRule(Form::FILLED, "Vyplň prosím ulici a ČP.");
         $form->addText("obec", "Obec")->addRule(Form::FILLED, "Vyplň prosím obec.");
         $form->addText("psc", "PSČ")->addRule(Form::FILLED, "Vyplň prosím PSČ.");
         $form->addText("telefon", "Telefon")->addRule(Form::FILLED, "Vyplň prosím telefon.")->addRule(Form::PATTERN, "Telefon musí mít 9 číslic.",'([0-9]\s*){9}');
         $form->addText("email", 'E-mail')->addRule(Form::FILLED, "Vyplň prosím e-mail.")
             ->addRule(Form::EMAIL, "Vyplň prosím platný e-mail.");
         $form->addCheckbox("checkbox1", "Jsem starší 15 let.")->addRule(Form::FILLED, "Pro účast v soutěži musíš být starší než 15 let.");
-        $form->addCheckbox("checkbox2", "Souhlasím s pravidly soutěže.")->addRule(Form::FILLED, "Pro účast v soutěži je třeba souhlasit s pravidly.");
+        $form->addCheckbox("checkbox2", "Souhlasím s ")->addRule(Form::FILLED, "Pro účast v soutěži je třeba souhlasit s pravidly.");
         $form->addCheckbox("agree", "Chci zůstat v databázi příznivců.")->setValue(true);
-        $form->addText("referer", "Referenční číslo (nepovinné)")->addCondition(Form::FILLED)->addRule(Form::PATTERN, "Pokud vyplňuješ referenční číslo, musí mít 9 číslic.",'([0-9]\s*){9}');
+        $form->addText("referer", "Referenční číslo")->addCondition(Form::FILLED)->addRule(Form::PATTERN, "Pokud vyplňuješ referenční číslo, musí mít 9 číslic. Referenční číslo je telefonní číslo člověka, který tě do soutěže přivedl. Jeho vyplnění není povinné.",'([0-9]\s*){9}');
 
         $form->addSubmit("send_address", "Potvrdit přihlášku");
 
@@ -171,27 +169,23 @@ class HomepagePresenter extends BasePresenter
     }
     public function address($form) {
         $vals = $form->getValues();
-        $id = $this->prihlasky->add($vals);
-        $template = new Nette\Templating\FileTemplate(__DIR__.'/../templates/Homepage/@email.latte');
-        $template->registerFilter(new Nette\Latte\Engine);
-        $template->registerHelperLoader('Nette\Templating\Helpers::loader');
-        $template->vals = $vals;
-
-        $mail = new \Nette\Mail\Message;
-        $mail->setFrom('soutez@pirati.cz')
-            ->addTo($vals['email'])
-            ->addBcc("stanislav.stipl@pirati.cz")
-            ->setHtmlBody($template);
-
-
-        $this->mailer->send($mail);
-
-        if (!empty($id)) {
-            $this->flashMessage("Tvoje přihlášení do soutěže proběhlo úspěšně. Na e-mail ti přijdou podrobnější pokyny a materiály.");
-        } else {
-            $this->flashMessage("Přihlášení se bohužel nezdařilo. Když všechno selže, napiš na stanislav.stipl@pirati.cz");
+        $prihlaska = $this->prihlasky->getByTelefon($vals['telefon']);
+        $prihlaska2 = $this->prihlasky->getByEmail($vals['email']);
+        if (!empty($prihlaska)) {
+            $form['telefon']->addError("Zadané telefonní číslo už je v soutěži zaregistrováno.");
         }
-        $this->redirect("prihlaseni4");
+        if (!empty($prihlaska2)) {
+            $form['email']->addError("Zadaný e-mail je už v soutěži zaregistrován.");
+        }
+        if (empty($prihlaska) && empty($prihlaska2)) {
+            $id = $this->prihlasky->add($vals);
+            if (!empty($id)) {
+                $this->flashMessage("Tvoje přihlášení do soutěže proběhlo úspěšně. Na e-mail ti přijdou podrobnější pokyny a materiály.");
+            } else {
+                $this->flashMessage("Přihlášení se bohužel nezdařilo. Když všechno selže, napiš na stanislav.stipl@pirati.cz");
+            }
+            $this->redirect("prihlaseni4");
+        }
     }
     public function actionPrihlaseni2() {
         if ($this->section->body>2) {
