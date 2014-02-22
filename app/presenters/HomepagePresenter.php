@@ -135,19 +135,19 @@ class HomepagePresenter extends BasePresenter
             if ($this->prihlasky->isLocked($vals['okrsek'])) {
                 $this->template->message = "Vybraný okrsek je bohužel už obsazený a zamčený. Pokud se chceš zapojit do soutěže, vyber si prosím jiný.";
                 $form['send_okrsek']->setAttribute('hidden', true);
-            }
-            $prihlaseni = $this->prihlasky->getByKod($vals['okrsek']);
-            $this->template->prihlaseni = $prihlaseni;
-            if ($prihlaseni) {
-                if (count($prihlaseni)==1) {
-                    $this->template->message = "Vybraný okrsek je obsazený, ale ještě není uzamčený. V okrsku je přihlášen 1 účastník soutěže. Přihlaš se do okrsku, pošli důkaz o kampani dřív než on a okrsek bude tvůj!";
-                } elseif (count($prihlaseni)<5) {
-                    $this->template->message = "Vybraný okrsek je obsazený, ale ještě není uzamčený. V okrsku jsou přihlášeni ".count($prihlaseni)." účastníci soutěže. Přihlaš se do okrsku, pošli důkaz o kampani dřív než oni a okrsek bude tvůj!";
-                } else {
-                    $this->template->message = "Vybraný okrsek je obsazený, ale ještě není uzamčený. V okrsku je přihlášeno ".count($prihlaseni)." účastníků soutěže. Přihlaš se do okrsku, pošli důkaz o kampani dřív než oni a okrsek bude tvůj!";
-                }
             } else {
-                $this->template->message = "Vybraný okrsek je volný! Rychle se přihlaš a pošli důkaz o kampani, ať jej neobsadí někdo jiný.";
+                $prihlaseni = $this->prihlasky->getByKod($vals['okrsek']);
+                if ($prihlaseni) {
+                    if (count($prihlaseni)==1) {
+                        $this->template->message = "Vybraný okrsek je obsazený, ale ještě není uzamčený. V okrsku je přihlášen 1 účastník soutěže. Přihlaš se do okrsku, pošli důkaz o kampani dřív než on a okrsek bude tvůj!";
+                    } elseif (count($prihlaseni)<5) {
+                        $this->template->message = "Vybraný okrsek je obsazený, ale ještě není uzamčený. V okrsku jsou přihlášeni ".count($prihlaseni)." účastníci soutěže. Přihlaš se do okrsku, pošli důkaz o kampani dřív než oni a okrsek bude tvůj!";
+                    } else {
+                        $this->template->message = "Vybraný okrsek je obsazený, ale ještě není uzamčený. V okrsku je přihlášeno ".count($prihlaseni)." účastníků soutěže. Přihlaš se do okrsku, pošli důkaz o kampani dřív než oni a okrsek bude tvůj!";
+                    }
+                } else {
+                    $this->template->message = "Vybraný okrsek je volný! Rychle se přihlaš a pošli důkaz o kampani, ať jej neobsadí někdo jiný.";
+                }
             }
         }
         $this->redrawControl('prihlaseni2');
