@@ -1,0 +1,27 @@
+{block h1}<h1>Přihlášení do soutěže S Piráty do Evropy (krok 3/3)</h1>{/block}
+{block content}
+
+<p>Zde vyplň svou kontaktní adresu. Adresa nemusí být shodná s adresou soutěžního okrsku.</p>
+{form prihlaseni3}
+
+<table>
+<tr><th class="required">{label jmeno /}</th><td>{input jmeno}</td></tr>
+<tr><th class="required">{label ulice /}</th><td>{input ulice}</td></tr>
+<tr><th class="required">{label obec /}</th><td>{input obec}</td></tr>
+<tr><th class="required">{label psc /}</th><td>{input psc}</td></tr>
+<tr><th class="required">{label telefon /}</th><td>{input telefon}</td><td><span class="error" n:foreach="$form['telefon']->errors as $error">{$error}</span></td></tr>
+<tr><th class="required">{label email /}</th><td>{input email}</td><td><span class="error" n:foreach="$form['email']->errors as $error">{$error}</span></td></tr>
+
+<tr><th></th><td class="required">{input checkbox1} {label checkbox1 /}</td></tr>
+<tr><th></th><td class="required">{input checkbox2} {label checkbox2}<a n:href="pravidla" target="_blank">pravidly soutěže</a>.{/label}</td></tr>
+<tr><th></th><td>{input agree} {label agree}{/label}</td></tr>
+
+<tr><th>{label referer /}</th><td>{input referer}</td></tr>
+
+<tr><th></th><td>{input send_address}</td></tr>
+
+</table>
+
+{/form}
+Referenční číslo je telefonní číslo člověka, který tě do soutěže přivedl. Nemusíš ho vyplňovat.
+{/block}

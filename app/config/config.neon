@@ -25,4 +25,8 @@ nette:
 services:
 	- App\UserManager
 	- App\RouterFactory
+	ruian:
+		class: App\Ruian
+		arguments: ['@nette.database.ruian.context']
+	- App\Prihlasky
 	router: @App\RouterFactory::createRouter
