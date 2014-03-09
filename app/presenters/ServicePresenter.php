@@ -24,9 +24,6 @@ class ServicePresenter extends BasePresenter {
         $caller_number = $json -> caller_number;
         $called_number = $json -> called_number;
 
-        // paklize volajici hovor polozi, posle Telfa parametr hangup
-        $hangup = $json -> hangup;
-
         // libovolna vlastni promenna, kterou posilate v odpovedi Telfe se Vam opet vrati, diky tomu je mozne zjistovat, co jste naposled udelal pro kazdy z hovoru
         $pokracovani = 0;
         if (!empty($json->pokracovani)) {
@@ -34,7 +31,7 @@ class ServicePresenter extends BasePresenter {
         }
 
         // paklize volajici polozi hovor, polozime ho taky
-        if( empty($hangup) ){
+        if( empty($json->hangup) ){
 
             // kdyz prichozi hovor vola API poprve, neobsahuje vlastni promennou pokracovani
             if( empty($pokracovani) ){
