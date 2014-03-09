@@ -54,5 +54,6 @@ class ServicePresenter extends BasePresenter {
             $a = array( 'action' => 'hangup' );
         }
         echo json_encode($a);
+        $this->terminate();
     }
 }
