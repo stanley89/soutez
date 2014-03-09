@@ -28,7 +28,10 @@ class ServicePresenter extends BasePresenter {
         $hangup = $json -> hangup;
 
         // libovolna vlastni promenna, kterou posilate v odpovedi Telfe se Vam opet vrati, diky tomu je mozne zjistovat, co jste naposled udelal pro kazdy z hovoru
-        $pokracovani = $json -> pokracovani;
+        $pokracovani = 0;
+        if (!empty($json->pokracovani) {
+            $pokracovani = $json -> pokracovani;
+        }
 
         // paklize volajici polozi hovor, polozime ho taky
         if( empty($hangup) ){
