@@ -29,7 +29,7 @@ class ServicePresenter extends BasePresenter {
 
         // libovolna vlastni promenna, kterou posilate v odpovedi Telfe se Vam opet vrati, diky tomu je mozne zjistovat, co jste naposled udelal pro kazdy z hovoru
         $pokracovani = 0;
-        if (!empty($json->pokracovani) {
+        if (!empty($json->pokracovani)) {
             $pokracovani = $json -> pokracovani;
         }
 
