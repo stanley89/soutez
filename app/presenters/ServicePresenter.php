@@ -11,6 +11,10 @@ namespace App\Presenters;
 
 class ServicePresenter extends BasePresenter {
 
+    private $prihlasky;
+    public function injectPrihlasky(\App\Prihlasky $prihlasky) {
+        $this->prihlasky = $prihlasky;
+    }
     public function actionTelfa() {
         $body = file_get_contents('php://input');
         // zpracovani prijateho jsonu do objektu
