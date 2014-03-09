@@ -12,8 +12,7 @@ namespace App\Presenters;
 class ServicePresenter extends BasePresenter {
 
     public function actionTelfa() {
-        $body = $this->getHttpRequest()->getPost();// Telfa posila informace o hovoru v tele requestu
-
+        $body = file_get_contents('php://input');
         // zpracovani prijateho jsonu do objektu
         $json = json_decode($body);
 
