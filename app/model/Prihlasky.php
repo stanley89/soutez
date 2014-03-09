@@ -62,4 +62,7 @@ class Prihlasky {
     public function getByTelefon($telefon) {
         return $this->db->fetch("SELECT * FROM prihlasky WHERE telefon=?;",$telefon);
     }
+    public function phoneCall() {
+        return true;
+    }
 }
