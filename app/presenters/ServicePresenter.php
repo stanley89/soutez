@@ -47,7 +47,7 @@ class ServicePresenter extends BasePresenter {
                 // posleme povel prehraj hlasku s urcitym ID a vlastni promennou “pokracovani” s hodnotou 1, diky ktere pozname ze uz jsme u tohoto hovoru provedli prvni krok
                 //$a = array( 'action' => 'play', 'recording_id' => '889', 'pokracovani' => '1' );
                 // jakmile Telfa dokonci prehravani hlasky, opet zavola vasi URL, tentokrate bude request obsahovat vlastni promennou „pokracovani“ nastavenou na hodnotu 1
-            } elseif ( $pokracovani ==
+            } elseif ( $pokracovani == 2) {
                 // ve druhém kroku můžeme využijeme řečový syntetizér Telfy a přečteme zadaný text, zároveň pošleme parametr „pokracovani“ posleme s hodnotou 2
                 // pri opetovnem zavolani URL posleme povel k polozeni hovoru, vzhledem k tomu, ze hovor nebyl zvednut a hlasky se prehravaly misto vyzvaneciho tonu, hovor je volajicimu odmitnut
                 $a = array( 'action' => 'hangup');
