@@ -40,8 +40,14 @@ $('#frm-prihlaseni2 select').change(function() {
         m.addControl(mouse);
 
         function click(e, elm) { /* Došlo ke kliknutí, spočítáme kde */
-            var coords = SMap.Coords.fromEvent(e.data.event, m);
-            alert("Kliknuto na " + coords.toWGS84(2).reverse().join(" "));
+            var coords = SMap.Coords.fromEvent(e.data.event, m).toWGS84();
+
+                $.ajax( {
+                  type: "POST",
+                  url: {link mapa!},
+                  data: { latitude: coords[0], longtitude: coords[1]  },
+
+                } );
         }
         m.getSignals().addListener(window, "map-click", click); /* Při signálu kliknutí volat tuto funkci */
 

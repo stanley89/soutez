@@ -213,5 +213,9 @@ class HomepagePresenter extends BasePresenter
     public function renderPocitadlo() {
         $this->template->cnt = $this->prihlasky->getConfirmedCount();
     }
-
+    public function handleMapa($latitude, $longtitude) {
+        echo $latitude;
+        echo $longtitude;
+        $this->terminate();
+    }
 }
