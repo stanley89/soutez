@@ -144,6 +144,7 @@ class HomepagePresenter extends BasePresenter
             if (count($okrsky)==1) {
                 $form['okrsek']->setValue(key($okrsky));
             }
+            $vals = $form->getValues();
         }
         if (!empty($vals['okrsek'])) {
             $this->template->okrsek = $this->ruian->getOkrsekHranice($vals['okrsek']);
