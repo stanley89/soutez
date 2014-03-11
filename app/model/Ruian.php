@@ -39,7 +39,7 @@ class Ruian {
         }
     }
     public function getCpByUlicePairs($ulice_kod) {
-        $rows = $this->db->fetchAll("SELECT a.* FROM rn_adresni_misto WHERE ulice_kod=? ORDER BY cislo_domovni;",$ulice_kod);
+        $rows = $this->db->fetchAll("SELECT a.* FROM rn_adresni_misto a WHERE ulice_kod=? ORDER BY cislo_domovni;",$ulice_kod);
         return $this->normalize($rows);
     }
     private function normalize($rows) {
