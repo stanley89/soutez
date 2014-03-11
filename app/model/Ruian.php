@@ -85,7 +85,13 @@ class Ruian {
     public function getObec($kod) {
         return $this->db->fetch("SELECT * FROM rn_obec WHERE kod=?;",$kod);
     }
+    public function getOkres($kod) {
+        return $this->db->fetch("SELECT * FROM rn_okres WHERE kod=?;",$kod);
+    }
+    public function getVusc($kod) {
+        return $this->db->fetch("SELECT * FROM rn_vusc WHERE kod=?;",$kod);
+    }
     public function getOkrsekByGps($longtitude, $latitude) {
-        return $this->db->fetch("SELECT o.* FROM rn_volebni_okrsek o WHERE ST_Contains(o.hranice, ST_GeomFromText('POINT(".$longtitude.",".$latitude.")') )");
+        return $this->db->fetch("SELECT o.* FROM rn_volebni_okrsek o WHERE ST_Contains(o.hranice, ST_Transform(st_setsrid(ST_GeomFromText('POINT(".$longtitude." ".$latitude.")'),4326),5514) )");
     }
 } 

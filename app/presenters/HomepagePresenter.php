@@ -15,6 +15,8 @@ class HomepagePresenter extends BasePresenter
     private $ruian;
     private $hranice;
     private $prihlasky;
+    private $okrsek;
+    private $obec;
 
     public function __construct(\Nette\Http\Session $session, \App\Ruian $ruian, \App\Prihlasky $prihlasky) {
         $this->section = $session->getSection("soutez");
@@ -27,7 +29,7 @@ class HomepagePresenter extends BasePresenter
         $form->addRadioList("otazka2", "Otázka na možnost 1",array(1 => "Možnost 1", "Možnost 2", "Možnost 3"));
         $form->addRadioList("otazka3", "Otázka na možnost 3",array(1 => "Možnost 1", "Možnost 2", "Možnost 3"));
         $form->addRadioList("otazka4", "Otázka na možnost 3",array(1 => "Možnost 1", "Možnost 2", "Možnost 3"));
-        $form->addSubmit("send_quiz", "Odeslat");
+        $form->addSubmit("send_quiz", "Odpovědět na otázky");
 
         $renderer = $form->getRenderer();
         $renderer->wrappers['controls']['container'] = 'dl';
@@ -45,7 +47,7 @@ class HomepagePresenter extends BasePresenter
         $form->addSelect("obec", "Obec" )->setPrompt("-- vyber obec --")->setAttribute("hidden");
         $form->addSelect("ulice", "Ulice" )->setPrompt("-- vyber ulici --")->setAttribute("hidden");
         $form->addSelect("okrsek", "Okrsek")->setPrompt("-- vyber číslo okrsku --")->setAttribute("hidden");
-        $form->addSubmit("send_okrsek", "Odeslat")->setAttribute("hidden");
+        $form->addSubmit("send_okrsek", "Potvrdit výběr okrsku")->setAttribute("hidden");
 
         $form->onSuccess[] = callback($this, "okrsek");
         return $form;
@@ -111,6 +113,8 @@ class HomepagePresenter extends BasePresenter
             $vals = $form->getValues();
         }
         if (!empty($vals['obec'])) {
+            $this->template->obec = $this->ruian->getObec($vals['obec']);
+
             $ulice = $this->ruian->getUlicePairs($vals['obec']);
     		if (count($ulice)>1) {
 	    		$form['ulice']->setAttribute('hidden',false);
@@ -131,26 +135,10 @@ class HomepagePresenter extends BasePresenter
             }
         }
         if (!empty($vals['okrsek'])) {
-            $this->template->okrsek = $this->ruian->getOkrsekHranice($vals['okrsek']);
+            $this->okrsek = $this->ruian->getOkrsek($vals['okrsek']);
+            $this->obec = $this->ruian->getObec($this->okrsek['obec_kod']);
             $this->hranice = $this->ruian->getOkrsekHranice($vals['okrsek']);
-            $form['send_okrsek']->setAttribute('hidden', false);
-            if ($this->prihlasky->isLocked($vals['okrsek'])) {
-                $this->template->message = "Vybraný okrsek je bohužel už obsazený a zamčený. Pokud se chceš zapojit do soutěže, vyber si prosím jiný.";
-                $form['send_okrsek']->setAttribute('hidden', true);
-            } else {
-                $prihlaseni = $this->prihlasky->getByKod($vals['okrsek']);
-                if ($prihlaseni) {
-                    if (count($prihlaseni)==1) {
-                        $this->template->message = "Vybraný okrsek je obsazený, ale ještě není uzamčený. V okrsku je přihlášen 1 účastník soutěže. Přihlaš se do okrsku, pošli důkaz o kampani dřív než on a okrsek bude tvůj!";
-                    } elseif (count($prihlaseni)<5) {
-                        $this->template->message = "Vybraný okrsek je obsazený, ale ještě není uzamčený. V okrsku jsou přihlášeni ".count($prihlaseni)." účastníci soutěže. Přihlaš se do okrsku, pošli důkaz o kampani dřív než oni a okrsek bude tvůj!";
-                    } else {
-                        $this->template->message = "Vybraný okrsek je obsazený, ale ještě není uzamčený. V okrsku je přihlášeno ".count($prihlaseni)." účastníků soutěže. Přihlaš se do okrsku, pošli důkaz o kampani dřív než oni a okrsek bude tvůj!";
-                    }
-                } else {
-                    $this->template->message = "Vybraný okrsek je volný! Rychle se přihlaš a pošli důkaz o kampani, ať jej neobsadí někdo jiný.";
-                }
-            }
+
         }
         $this->redrawControl('prihlaseni2');
         $this->redrawControl('mapa');
@@ -199,6 +187,30 @@ class HomepagePresenter extends BasePresenter
         if (!empty($this->hranice)) {
             $this->template->hranice = $this->ruian->convertHranice($this->hranice);
         }
+        if (!empty($this->okrsek)) {
+            $this->template->okrsek = $this->okrsek;
+            $this->template->obec = $this->obec;
+
+            $form = $this['prihlaseni2'];
+            $form['send_okrsek']->setAttribute('hidden', false);
+            if ($this->prihlasky->isLocked($this->okrsek['kod'])) {
+                $this->template->message = "Vybraný okrsek je bohužel už obsazený a zamčený. Pokud se chceš zapojit do soutěže, vyber si prosím jiný.";
+                $form['send_okrsek']->setAttribute('hidden', true);
+            } else {
+                $prihlaseni = $this->prihlasky->getByKod($this->okrsek['kod']);
+                if ($prihlaseni) {
+                    if (count($prihlaseni)==1) {
+                        $this->template->message = "Vybraný okrsek je obsazený, ale ještě není uzamčený. V okrsku je přihlášen 1 účastník soutěže. Přihlaš se do okrsku, pošli důkaz o kampani dřív než on a okrsek bude tvůj!";
+                    } elseif (count($prihlaseni)<5) {
+                        $this->template->message = "Vybraný okrsek je obsazený, ale ještě není uzamčený. V okrsku jsou přihlášeni ".count($prihlaseni)." účastníci soutěže. Přihlaš se do okrsku, pošli důkaz o kampani dřív než oni a okrsek bude tvůj!";
+                    } else {
+                        $this->template->message = "Vybraný okrsek je obsazený, ale ještě není uzamčený. V okrsku je přihlášeno ".count($prihlaseni)." účastníků soutěže. Přihlaš se do okrsku, pošli důkaz o kampani dřív než oni a okrsek bude tvůj!";
+                    }
+                } else {
+                    $this->template->message = "Vybraný okrsek je volný! Rychle se přihlaš a pošli důkaz o kampani, ať jej neobsadí někdo jiný.";
+                }
+            }
+        }
     }
     public function actionPrihlaseni3() {
         $okrsek = $this->ruian->getOkrsek($this->section->okrsek);
@@ -213,9 +225,41 @@ class HomepagePresenter extends BasePresenter
     public function renderPocitadlo() {
         $this->template->cnt = $this->prihlasky->getConfirmedCount();
     }
-    public function handleMapa($latitude, $longtitude) {
-        $okrsek = $this->ruian->getOkrsekByGps($latitude, $longtitude);
-        print_r($okrsek);
-        $this->terminate();
+    public function handleMapa($longtitude, $latitude) {
+        $okrsek = $this->ruian->getOkrsekByGps($longtitude, $latitude);
+        if (!empty($okrsek)) {
+            $obec = $this->ruian->getObec($okrsek['obec_kod']);
+            $okres = $this->ruian->getOkres($obec['okres_kod']);
+            $kraj = $this->ruian->getVusc($okres['vusc_kod']);
+
+            $okresy = $this->ruian->getOkresPairs($kraj['kod']);
+            $obce = $this->ruian->getObecPairs($okres['kod']);
+            $okrsky = $this->ruian->getOkrsekPairs($obec['kod'],null);
+            $ulice = $this->ruian->getUlicePairs($obec['kod'],null);
+
+
+            $this['prihlaseni2']['okres']->setItems($okresy);
+            $this['prihlaseni2']['obec']->setItems($obce);
+            $this['prihlaseni2']['okrsek']->setItems($okrsky);
+            $this['prihlaseni2']['ulice']->setItems($ulice);
+
+            $this['prihlaseni2']['vusc']->setValue($kraj['kod']);
+            $this['prihlaseni2']['okres']->setValue($okres['kod']);
+            $this['prihlaseni2']['obec']->setValue($obec['kod']);
+            $this['prihlaseni2']['okrsek']->setValue($okrsek['kod']);
+
+            $this['prihlaseni2']['obec']->setAttribute('hidden',false);
+            $this['prihlaseni2']['okres']->setAttribute('hidden',false);
+            $this['prihlaseni2']['vusc']->setAttribute('hidden',false);
+            $this['prihlaseni2']['okrsek']->setAttribute('hidden',false);
+            $this['prihlaseni2']['ulice']->setAttribute('hidden',false);
+
+            $this->hranice = $this->ruian->getOkrsekHranice($okrsek['kod']);
+            $this->okrsek = $okrsek;
+            $this->obec = $obec;
+
+            $this->redrawControl('prihlaseni2');
+            $this->redrawControl('mapa');
+        }
     }
 }

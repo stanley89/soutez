@@ -4,8 +4,27 @@
 
 {block content2}
 {snippet prihlaseni2}
-{control prihlaseni2}
-{ifset $message}{$message}{/ifset}
+{form prihlaseni2}
+<table>
+<tr><th>{label vusc /}</th><td>{input vusc}</td></tr>
+<tr><th>{label okres /}</th><td>{input okres}</td></tr>
+<tr><th>{label obec /}</th><td>{input obec}</td></tr>
+<tr><th>{label ulice /}</th><td>{input ulice}</td></tr>
+<tr><th>{label okrsek /}</th><td>{input okrsek}</td></tr>
+
+</table>
+{if !empty($obec) && !empty($okrsek)}
+<h2>Vybraný okrsek: {$obec['nazev']} - {$okrsek['cislo']}</h2>
+{/if}
+
+{if !empty($obec) && empty($okrsek)}
+<p>Okrsek je možné vybrat z formuláře výše nebo kliknutím na místo na mapě.</p>
+{/if}
+
+{ifset $message}<p>{$message}</p>{/ifset}
+{input send_okrsek}
+{/form}
+
 <script type="text/javascript">
 $(function() {
 form = $('#frm-prihlaseni2');
@@ -65,9 +84,17 @@ var points2 = [
     {/foreach}
 {/ifset}
 ];
+{if !empty($okrsek)}
 var options2 = {
     color: "#00f"
 };
+{else}
+var options2 = {
+    color: "#00f",
+    opacity: 0
+};
+{/if}
+
 var polygon = new SMap.Geometry(SMap.GEOMETRY_POLYGON, null, points2, options2);
 var cz = m.computeCenterZoom(points2);
 m.setCenterZoom(cz[0], cz[1] );
