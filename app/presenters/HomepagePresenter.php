@@ -44,7 +44,7 @@ class HomepagePresenter extends BasePresenter
         $form->addSelect("okres", "Okres" )->setPrompt("-- vyber okres --")->setAttribute("hidden");
         $form->addSelect("obec", "Obec" )->setPrompt("-- vyber obec --")->setAttribute("hidden");
         $form->addSelect("ulice", "Ulice" )->setPrompt("-- vyber ulici --")->setAttribute("hidden");
-        $form->addSelect("cp", "Čp" )->setPrompt("-- vyber ulici --")->setAttribute("hidden");
+        $form->addSelect("cp", "Čp" )->setPrompt("-- vyber číslo popisní/orientační --")->setAttribute("hidden");
         $form->addSelect("okrsek", "Okrsek")->setPrompt("-- vyber číslo okrsku --")->setAttribute("hidden");
         $form->addSubmit("send_okrsek", "Odeslat")->setAttribute("hidden");
 
@@ -116,7 +116,11 @@ class HomepagePresenter extends BasePresenter
     		if (count($ulice)>1) {
 	    		$form['ulice']->setAttribute('hidden',false);
 		    	$form['ulice']->setItems($ulice);
-		    }
+		    } else {
+                $cp = $this->ruian->getCpByObecPairs($vals['obec']);
+                $form['cp']->setAttribute('hidden',false);
+                $form['cp']->setItems($cp);
+            }
             $vals = $form->getValues();
             $okrsky = $this->ruian->getOkrsekPairs($vals['obec'],$vals['ulice']);
 		    $form['okrsek']->setAttribute('hidden',false);
@@ -127,6 +131,9 @@ class HomepagePresenter extends BasePresenter
             $vals = $form->getValues();
             if (!empty($vals['ulice'])) {
                 $this->hranice = $this->ruian->getOkrskyHraniceUlice($vals['ulice']);
+                $cp = $this->ruian->getCpByUlicePairs($vals['ulice']);
+                $form['cp']->setAttribute('hidden',false);
+                $form['cp']->setItems($cp);
             } else {
                 $this->hranice = $this->ruian->getObecHranice($vals['obec']);
             }
