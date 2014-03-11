@@ -39,12 +39,12 @@ class Ruian {
         }
     }
     public function getCpByObecPairs($obec_kod) {
-        $rows = $this->db->fetchAll("SELECT * FROM rn_adresni_misto a, rn_obec o
+        $rows = $this->db->fetchAll("SELECT a.* FROM rn_adresni_misto a, rn_obec o
                                     WHERE o.kod=? AND ST_Contains(o.hranice,a.definicni_bod) ORDER BY cislo_domovni;",$obec_kod);
         return $this->normalize($rows);
     }
     public function getCpByUlicePairs($ulice_kod) {
-        $rows = $this->db->fetchAll("SELECT * FROM rn_adresni_misto WHERE ulice_kod=? ORDER BY cislo_domovni;",$ulice_kod);
+        $rows = $this->db->fetchAll("SELECT a.* FROM rn_adresni_misto WHERE ulice_kod=? ORDER BY cislo_domovni;",$ulice_kod);
         return $this->normalize($rows);
     }
     private function normalize($rows) {
