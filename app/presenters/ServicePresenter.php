@@ -9,6 +9,8 @@
 namespace App\Presenters;
 
 
+use Nette\Diagnostics\Debugger;
+
 class ServicePresenter extends BasePresenter {
 
     private $prihlasky;
@@ -19,6 +21,7 @@ class ServicePresenter extends BasePresenter {
         $body = file_get_contents('php://input');
         // zpracovani prijateho jsonu do objektu
         $json = json_decode($body);
+        Debugger::log($json);
 
         // nacteni cisla volajiciho a cisla volaneho z json objektu
         $caller_number = $json -> caller_number;

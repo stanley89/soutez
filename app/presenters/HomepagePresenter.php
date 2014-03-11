@@ -44,6 +44,7 @@ class HomepagePresenter extends BasePresenter
         $form->addSelect("okres", "Okres" )->setPrompt("-- vyber okres --")->setAttribute("hidden");
         $form->addSelect("obec", "Obec" )->setPrompt("-- vyber obec --")->setAttribute("hidden");
         $form->addSelect("ulice", "Ulice" )->setPrompt("-- vyber ulici --")->setAttribute("hidden");
+        $form->addSelect("cp", "Čp" )->setPrompt("-- vyber ulici --")->setAttribute("hidden");
         $form->addSelect("okrsek", "Okrsek")->setPrompt("-- vyber číslo okrsku --")->setAttribute("hidden");
         $form->addSubmit("send_okrsek", "Odeslat")->setAttribute("hidden");
 
@@ -63,7 +64,7 @@ class HomepagePresenter extends BasePresenter
         $form->addCheckbox("checkbox1", "Jsem starší 15 let.")->addRule(Form::FILLED, "Pro účast v soutěži musíš být starší než 15 let.");
         $form->addCheckbox("checkbox2", "Souhlasím s ")->addRule(Form::FILLED, "Pro účast v soutěži je třeba souhlasit s pravidly.");
         $form->addCheckbox("agree", "Chci zůstat v databázi příznivců.")->setValue(true);
-        $form->addText("referer", "Referenční číslo")->addCondition(Form::FILLED)->addRule(Form::PATTERN, "Pokud vyplňuješ referenční číslo, musí mít 9 číslic. Referenční číslo je telefonní číslo člověka, který tě do soutěže přivedl. Jeho vyplnění není povinné.",'([0-9]\s*){9}');
+        $form->addText("referer", "Referenční číslo (nepovinné)")->addCondition(Form::FILLED)->addRule(Form::PATTERN, "Pokud vyplňuješ referenční číslo, musí mít 9 číslic. Referenční číslo je telefonní číslo člověka, který tě do soutěže přivedl. Jeho vyplnění není povinné.",'([0-9]\s*){9}');
 
         $form->addSubmit("send_address", "Potvrdit přihlášku");
 

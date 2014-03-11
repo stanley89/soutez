@@ -46,10 +46,18 @@
         </ul>
         <div class="clear"></div>
     </div>
+    <a n:href="Homepage:" id="header">
+
+    </a>
     <div id="content">
+    {block content}
+    <div class=p20p>
     {block h1}{/block}
+
  	<div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
-	{include content}
+	{include content2}
+    </div>
+    {/block}
     </div>
     </div>
 <div class="modal"><!-- Place at bottom of page --></div>
