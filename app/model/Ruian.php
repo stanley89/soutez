@@ -40,7 +40,7 @@ class Ruian {
     }
     public function getCpByObecPairs($obec_kod) {
         $rows = $this->db->fetchAll("SELECT * FROM rn_adresni_misto a, rn_obec o
-                                    WHERE o.kod=? AND ST_Contains(a.definicni_bod,o.hranice) ORDER BY cislo_domovni;",$obec_kod);
+                                    WHERE o.kod=? AND ST_Contains(o.hranice,a.definicni_bod) ORDER BY cislo_domovni;",$obec_kod);
         return $this->normalize($rows);
     }
     public function getCpByUlicePairs($ulice_kod) {
