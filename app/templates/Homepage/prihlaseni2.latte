@@ -18,7 +18,7 @@
 {/if}
 
 {if !empty($obec) && empty($okrsek)}
-<p>Okrsek je možné vybrat z formuláře výše nebo kliknutím na místo na mapě.</p>
+<p>Okrsek je možné vybrat z formuláře výše nebo kliknutím na místo na mapě. Výběr ulice není povinný.</p>
 {/if}
 
 {ifset $message}<p>{$message}</p>{/ifset}
@@ -90,8 +90,8 @@ var options2 = {
 };
 {else}
 var options2 = {
-    color: "#00f",
-    opacity: 0
+    color: "#ff0",
+    opacity: 0.2
 };
 {/if}
 
