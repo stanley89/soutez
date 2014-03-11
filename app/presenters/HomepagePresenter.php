@@ -214,8 +214,8 @@ class HomepagePresenter extends BasePresenter
         $this->template->cnt = $this->prihlasky->getConfirmedCount();
     }
     public function handleMapa($latitude, $longtitude) {
-        echo $latitude;
-        echo $longtitude;
+        $okrsek = $this->ruian->getOkrsekByGps($latitude, $longtitude);
+        print_r($okrsek);
         $this->terminate();
     }
 }
