@@ -44,6 +44,7 @@ class Prihlasky {
 
         $mail = new \Nette\Mail\Message;
         $mail->setFrom('soutez@pirati.cz')
+            ->setSubject("Potvrzení registrace do soutěže s Piráty do Evropy")
             ->addTo($vals['email'])
             ->addBcc("stanislav.stipl@pirati.cz")
             ->setHtmlBody($template);
@@ -62,11 +63,31 @@ class Prihlasky {
     public function getByTelefon($telefon) {
         return $this->db->fetch("SELECT * FROM prihlasky WHERE telefon=?;",$telefon);
     }
+    public function activate($id) {
+        $this->db->query("UPDATE prihlasky SET confirmed=1 WHERE confirmed=0 AND id=?;",$id);
+    }
     public function phoneCall($telefon) {
-        $uzivatel = $this->getByTelefon($telefon);
-        if (empty($uzivatel)) {
+        $prihlaska = $this->getByTelefon($telefon);
+        if (empty($prihlaska)) {
             return false;
         } else {
+            if ($prihlaska->confirmed==0) {
+                $this->activate($prihlaska->id);
+                $template = new \Nette\Templating\FileTemplate(__DIR__.'/@email2.latte');
+                $template->registerFilter(new \Nette\Latte\Engine);
+                $template->registerHelperLoader('Nette\Templating\Helpers::loader');
+                $template->prihlaska = $prihlaska;
+
+                $mail = new \Nette\Mail\Message;
+                $mail->setFrom('soutez@pirati.cz')
+                    ->setSubject("Potvrzení aktivace účtu")
+                    ->addTo($prihlaska['email'])
+                    ->addBcc("stanislav.stipl@pirati.cz")
+                    ->setHtmlBody($template);
+
+
+                $this->mailer->send($mail);
+            }
             return true;
         }
     }
