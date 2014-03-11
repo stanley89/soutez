@@ -130,10 +130,6 @@ class HomepagePresenter extends BasePresenter
                         $form['cp']->setAttribute('hidden',false);
                         $form['cp']->setItems($cp);
                     }
-                } else {
-                    $cp = $this->ruian->getCpByObecPairs($vals['obec']);
-                    $form['cp']->setAttribute('hidden',false);
-                    $form['cp']->setItems($cp);
                 }
             }
             $vals = $form->getValues();
@@ -144,7 +140,10 @@ class HomepagePresenter extends BasePresenter
             }
         }
         if (!empty($vals['cp'])) {
-
+            $okrsky = $this->getOkrskyByCp($vals['cp']);
+            if (count($okrsky)==1) {
+                $form['okrsek']->setValue(key($okrsky));
+            }
         }
         if (!empty($vals['okrsek'])) {
             $this->template->okrsek = $this->ruian->getOkrsekHranice($vals['okrsek']);
