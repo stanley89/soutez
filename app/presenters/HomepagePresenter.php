@@ -125,9 +125,11 @@ class HomepagePresenter extends BasePresenter
 			    $form['okrsek']->setValue(key($okrsky));
 		    } else {
                 if (count($ulice)>1) {
-                    $cp = $this->ruian->getCpByUlicePairs($vals['ulice']);
-                    $form['cp']->setAttribute('hidden',false);
-                    $form['cp']->setItems($cp);
+                    if (!empty($vals['ulice'])) {
+                        $cp = $this->ruian->getCpByUlicePairs($vals['ulice']);
+                        $form['cp']->setAttribute('hidden',false);
+                        $form['cp']->setItems($cp);
+                    }
                 } else {
                     $cp = $this->ruian->getCpByObecPairs($vals['obec']);
                     $form['cp']->setAttribute('hidden',false);
