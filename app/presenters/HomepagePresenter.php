@@ -44,7 +44,6 @@ class HomepagePresenter extends BasePresenter
         $form->addSelect("okres", "Okres" )->setPrompt("-- vyber okres --")->setAttribute("hidden");
         $form->addSelect("obec", "Obec" )->setPrompt("-- vyber obec --")->setAttribute("hidden");
         $form->addSelect("ulice", "Ulice" )->setPrompt("-- vyber ulici --")->setAttribute("hidden");
-        $form->addSelect("cp", "Čp" )->setPrompt("-- vyber číslo popisné/orientační --")->setAttribute("hidden");
         $form->addSelect("okrsek", "Okrsek")->setPrompt("-- vyber číslo okrsku --")->setAttribute("hidden");
         $form->addSubmit("send_okrsek", "Odeslat")->setAttribute("hidden");
 
@@ -64,7 +63,7 @@ class HomepagePresenter extends BasePresenter
         $form->addCheckbox("checkbox1", "Jsem starší 15 let.")->addRule(Form::FILLED, "Pro účast v soutěži musíš být starší než 15 let.");
         $form->addCheckbox("checkbox2", "Souhlasím s ")->addRule(Form::FILLED, "Pro účast v soutěži je třeba souhlasit s pravidly.");
         $form->addCheckbox("agree", "Chci zůstat v databázi příznivců.")->setValue(true);
-        $form->addText("referer", "Referenční číslo (nepovinné)")->addCondition(Form::FILLED)->addRule(Form::PATTERN, "Pokud vyplňuješ referenční číslo, musí mít 9 číslic. Referenční číslo je telefonní číslo člověka, který tě do soutěže přivedl. Jeho vyplnění není povinné.",'([0-9]\s*){9}');
+        $form->addText("referer", "Referenční telefonní číslo")->addCondition(Form::FILLED)->addRule(Form::PATTERN, "Pokud vyplňuješ referenční číslo, musí mít 9 číslic. Referenční číslo je telefonní číslo člověka, který tě do soutěže přivedl. Jeho vyplnění není povinné.",'([0-9]\s*){9}');
 
         $form->addSubmit("send_address", "Potvrdit přihlášku");
 
@@ -123,28 +122,13 @@ class HomepagePresenter extends BasePresenter
 		    $form['okrsek']->setItems($okrsky);
 		    if (count($okrsky)==1) {
 			    $form['okrsek']->setValue(key($okrsky));
-		    } else {
-                if (count($ulice)>1) {
-                    if (!empty($vals['ulice'])) {
-                        $cp = $this->ruian->getCpByUlicePairs($vals['ulice']);
-                        $form['cp']->setAttribute('hidden',false);
-                        $form['cp']->setItems($cp);
-                    }
-                }
-            }
+		    }
             $vals = $form->getValues();
             if (!empty($vals['ulice'])) {
                 $this->hranice = $this->ruian->getOkrskyHraniceUlice($vals['ulice']);
             } else {
                 $this->hranice = $this->ruian->getObecHranice($vals['obec']);
             }
-        }
-        if (!empty($vals['cp'])) {
-            $okrsky = $this->ruian->getOkrskyByCpPairs($vals['cp']);
-            if (count($okrsky)==1) {
-                $form['okrsek']->setValue(key($okrsky));
-            }
-            $vals = $form->getValues();
         }
         if (!empty($vals['okrsek'])) {
             $this->template->okrsek = $this->ruian->getOkrsekHranice($vals['okrsek']);
@@ -226,5 +210,8 @@ class HomepagePresenter extends BasePresenter
 	{
 		$this->template->anyVariable = 'any value';
 	}
+    public function renderPocitadlo() {
+        $this->template->cnt = $this->prihlasky->getConfirmedCount();
+    }
 
 }

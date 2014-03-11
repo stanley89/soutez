@@ -38,27 +38,6 @@ class Ruian {
                 ORDER BY cislo;",$obec_kod,$ulice_kod);
         }
     }
-    public function getCpByUlicePairs($ulice_kod) {
-        $rows = $this->db->fetchAll("SELECT a.* FROM rn_adresni_misto a WHERE ulice_kod=? ORDER BY cislo_domovni;",$ulice_kod);
-        return $this->normalize($rows);
-    }
-    private function normalize($rows) {
-        $ret = array();
-        foreach ($rows as $row) {
-            if (empty($row->cislo_orientacni_hodnota)) {
-                $ret[$row->kod] = $row->cislo_domovni.$row->cislo_orientacni_pismeno;
-            } else {
-                $ret[$row->kod] = $row->cislo_domovni."/".$row->cislo_orientacni_hodnota.$row->cislo_orientacni_pismeno;
-            }
-        }
-        return $ret;
-    }
-    public function getOkrskyByCpPairs($cp_kod) {
-        return $this->db->fetchPairs("SELECT o.kod,o.cislo
-              FROM rn_volebni_okrsek o, rn_adresni_misto a
-              WHERE ST_Contains(o.hranice, a.definicni_bod) AND a.kod=?;
-        ",$cp_kod);
-    }
     public function getStatHranice() {
         return $this->db->fetchField("SELECT ST_AsText(ST_Transform(hranice, 4326)) FROM rn_stat;");
     }

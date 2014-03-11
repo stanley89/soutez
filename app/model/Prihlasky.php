@@ -91,4 +91,7 @@ class Prihlasky {
             return true;
         }
     }
+    public function getConfirmedCount() {
+        return $this->db->fetchField("SELECT count(id) FROM prihlasky WHERE confirmed=1;");
+    }
 }
