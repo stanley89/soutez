@@ -142,7 +142,7 @@ class HomepagePresenter extends BasePresenter
             }
         }
         if (!empty($vals['cp'])) {
-            
+
         }
         if (!empty($vals['okrsek'])) {
             $this->template->okrsek = $this->ruian->getOkrsekHranice($vals['okrsek']);
