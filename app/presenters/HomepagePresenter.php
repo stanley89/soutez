@@ -140,7 +140,7 @@ class HomepagePresenter extends BasePresenter
             }
         }
         if (!empty($vals['cp'])) {
-            $okrsky = $this->ruian->getOkrskyByCp($vals['cp']);
+            $okrsky = $this->ruian->getOkrskyByCpPairs($vals['cp']);
             if (count($okrsky)==1) {
                 $form['okrsek']->setValue(key($okrsky));
             }

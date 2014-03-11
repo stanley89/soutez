@@ -53,8 +53,8 @@ class Ruian {
         }
         return $ret;
     }
-    public function getOkrskyByCp($cp_kod) {
-        return $this->db->fetchAll("SELECT o.*
+    public function getOkrskyByCpPairs($cp_kod) {
+        return $this->db->fetchPairs("SELECT o.kod,o.cislo
               FROM rn_volebni_okrsek o, rn_adresni_misto a
               WHERE ST_Contains(o.hranice, a.definicni_bod) AND a.kod=?;
         ",$cp_kod);
