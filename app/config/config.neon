@@ -32,4 +32,5 @@ services:
 		arguments: ['@nette.database.ruian.context']
 	prihlasky:
 		class: App\Prihlasky
+		arguments: ['@nette.database.default.context']
 	router: @App\RouterFactory::createRouter

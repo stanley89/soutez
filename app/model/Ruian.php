@@ -40,10 +40,19 @@ class Ruian {
     }
     public function getCpByObecPairs($obec_kod) {
         return $this->db->fetchPairs("SELECT kod,cislo_domovni FROM rn_adresni_misto a, rn_obec o
-                                    WHERE o.obec_kod=? AND ST_Contains(o.hranice,a.definicni_bod) ORDER BY nazev;",$obec_kod);
+                                    WHERE o.obec_kod=? AND ST_Contains(o.hranice,a.definicni_bod) ORDER BY cislo_domovni;",$obec_kod);
     }
     public function getCpByUlicePairs($ulice_kod) {
-        return $this->db->fetchPairs("SELECT kod,cislo_domovni FROM rn_adresni_misto WHERE ulice_kod=? ORDER BY nazev;",$ulice_kod);
+        $rows = $this->db->fetchAll("SELECT * FROM rn_adresni_misto WHERE ulice_kod=? ORDER BY cislo_domovni;",$ulice_kod);
+        $ret = array();
+        foreach ($rows as $row) {
+            if (empty($row->cislo_orientacni_hodnota)) {
+                $ret[$row->kod] = $row->cislo_domovni.$row->cislo_orientacni_pismeno;
+            } else {
+                $ret[$row->kod] = $row->cislo_domovni."/".$row->cislo_orientacni_hodnota.$row->cislo_orientacni_pismeno;
+            }
+        }
+        return $ret;
     }
     public function getStatHranice() {
         return $this->db->fetchField("SELECT ST_AsText(ST_Transform(hranice, 4326)) FROM rn_stat;");
