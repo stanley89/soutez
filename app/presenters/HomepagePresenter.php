@@ -25,10 +25,10 @@ class HomepagePresenter extends BasePresenter
     }
     protected function createComponentPrihlaseni() {
         $form = new \Nette\Application\UI\Form();
-        $form->addRadioList("otazka1", "Otázka na možnost 2",array(1 => "Možnost 1", "Možnost 2", "Možnost 3"));
-        $form->addRadioList("otazka2", "Otázka na možnost 1",array(1 => "Možnost 1", "Možnost 2", "Možnost 3"));
-        $form->addRadioList("otazka3", "Otázka na možnost 3",array(1 => "Možnost 1", "Možnost 2", "Možnost 3"));
-        $form->addRadioList("otazka4", "Otázka na možnost 3",array(1 => "Možnost 1", "Možnost 2", "Možnost 3"));
+        $form->addRadioList("otazka1", "Kolik členů má Evropská unie?",array(1 => "15", "28", "50"));
+        $form->addRadioList("otazka2", "Kdo je lídrem kandidátky Pirátů do Evropského parlamentu?",array(1 => "Ivan Bartoš", "Václav Klaus", "Martin Brož"));
+        $form->addRadioList("otazka3", "Co chtějí Piráti prosadit?",array(1 => "Vstup Turecka do EU", "Okamžité zavedení eura", "Demokratizaci EU"));
+        $form->addRadioList("otazka4", "Ve kterém roce vznikla Pirátská strana",array(1 => "1989", "1999", "2009"));
         $form->addSubmit("send_quiz", "Odpovědět na otázky");
 
         $renderer = $form->getRenderer();
