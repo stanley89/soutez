@@ -28,7 +28,7 @@ class HomepagePresenter extends BasePresenter
         $form->addRadioList("otazka1", "Kolik členů má Evropská unie?",array(1 => "15", "28", "50"));
         $form->addRadioList("otazka2", "Kdo je lídrem kandidátky Pirátů do Evropského parlamentu?",array(1 => "Ivan Bartoš", "Václav Klaus", "Martin Brož"));
         $form->addRadioList("otazka3", "Co chtějí Piráti prosadit?",array(1 => "Vstup Turecka do EU", "Okamžité zavedení eura", "Demokratizaci EU"));
-        $form->addRadioList("otazka4", "Ve kterém roce vznikla Česká pirátská strana",array(1 => "1989", "1999", "2009"));
+        $form->addRadioList("otazka4", "Ve kterém roce vznikla Česká pirátská strana?",array(1 => "1989", "1999", "2009"));
         $form->addSubmit("send_quiz", "Odpovědět na otázky");
 
         $renderer = $form->getRenderer();
