@@ -25,14 +25,14 @@ class HomepagePresenter extends BasePresenter
     }
     protected function createComponentPrihlaseni() {
         $form = new \Nette\Application\UI\Form();
-        $form->addRadioList("otazka1", "Přijde ti v pořádku, že stát sleduje s kým si volá, jak dlouho, a kde se při tom nacházíš?",
-            array(1 => "Ano, na prostý lidi musí být přísnost.", "No a co, kdo nedělá nic špatnýho, nemá co skrývat.", "Vadí mi to, stát mě nemá co šmírovat a chci to změnit."));
-        $form->addRadioList("otazka2", "Jsi spokojený s tím jak se u nás používají evropské dotace?",
-            array(1 => "Ano, každé ráno se jedu projet na cyklostezku odnikud nikam", "Samozřejmě, tatínek má poradenskou firmu","Ne a chci to změnit"));
-        $form->addRadioList("otazka3", "Přijde ti v pořádku, že mezinárodní smlouvy nejprve v utajení připraví firmy, kterých se týkají a až potom se k nim dostanou zvolení poslanci?",
-            array(1 => "Ano, aspoň je připravují odborníci", "Tak to přece není, jste paranoidní", "Nepřijde a chci to změnit"));
-        $form->addRadioList("otazka4", "Myslíš si, že o svobodě Internetu mají rozhodovat lidé, kteří uvázli ve století potrubní pošty?",
-            array(1 => "Ano, určitě na to mají poradce", "Já bych ty Internety zakázal(a), každého jenom otravují", "Ne, Internet změnil svět a lidi co mu rozumí, jsou v evropském parlamentu potřeba."));
+        $form->addRadioList("otazka1", "Vadí ti, že stát sleduje s kým si volá, jak dlouho, a kde se při tom nacházíš?",
+            array(1 => "Ne, na prostý lidi musí být přísnost.", "No a co, kdo nedělá nic špatnýho, nemá co skrývat. ", "Ano, vadí mi to, stát mě nemá co šmírovat a chci to změnit. "));
+        $form->addRadioList("otazka2", "Myslíš, že je potřeba úprava toho, jak se u nás používají evropské dotace?",
+            array(1 => "Ne, každé ráno se jedu projet na cyklostezku odnikud nikam, je tam krásně", "Vůbec ne, tatínek má poradenskou firmu","Ano, chci to změnit"));
+        $form->addRadioList("otazka3", "Vadí ti, že mezinárodní smlouvy nejprve v utajení připraví firmy, kterých se týkají a až potom se k nim dostanou zvolení poslanci?",
+            array(1 => "Ne, aspoň je připravují odborníci", "Tak to přece není, jste paranoidní", "Ano, vadí a chci to změnit"));
+        $form->addRadioList("otazka4", "Považuješ za problém, že o svobodě Internetu rozhodují lidé, kteří uvázli ve století potrubní pošty?",
+            array(1 => "Ne, určitě na to mají poradce", "Já bych ty Internety zakázal(a), každého jenom otravují", "Ano, Internet změnil svět a lidi co mu rozumí, jsou v evropském parlamentu potřeba!"));
         $form->addSubmit("send_quiz", "Odpovědět na otázky");
 
         $renderer = $form->getRenderer();
@@ -228,6 +228,8 @@ class HomepagePresenter extends BasePresenter
 	}
     public function renderPocitadlo() {
         $this->template->cnt = $this->prihlasky->getConfirmedCount();
+        $this->template->cnt2 = $this->prihlasky->getLockedCount();
+
     }
     public function handleMapa($longtitude, $latitude) {
         $okrsek = $this->ruian->getOkrsekByGps($longtitude, $latitude);

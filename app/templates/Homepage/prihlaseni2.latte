@@ -99,6 +99,7 @@ var polygon = new SMap.Geometry(SMap.GEOMETRY_POLYGON, null, points2, options2);
 var cz = m.computeCenterZoom(points2);
 m.setCenterZoom(cz[0], cz[1] );
 m.computeCenterZoom(polygon);
+m.setCursor("crosshair");
 layer.addGeometry(polygon);
 </script>
 {/snippet}

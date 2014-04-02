@@ -94,4 +94,7 @@ class Prihlasky {
     public function getConfirmedCount() {
         return $this->db->fetchField("SELECT count(id) FROM prihlasky WHERE confirmed=1;");
     }
+    public function getLockedCount() {
+        return $this->db->fetchField("SELECT count(id) FROM prihlasky WHERE locked=1;");
+    }
 }
