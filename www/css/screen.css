@@ -151,3 +151,14 @@ h1 {
 .p20p {
     padding: 20px;
 }
+.fb-like-box {
+    background-color: white;
+    margin: 20px;
+    float: left;
+}
+.twitter-timeline {
+    width: 425px;
+    margin: 20px;
+    float: left;
+    height: 250px;
+}

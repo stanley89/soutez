@@ -25,10 +25,14 @@ class HomepagePresenter extends BasePresenter
     }
     protected function createComponentPrihlaseni() {
         $form = new \Nette\Application\UI\Form();
-        $form->addRadioList("otazka1", "Kolik členů má Evropská unie?",array(1 => "15", "28", "50"));
-        $form->addRadioList("otazka2", "Kdo je lídrem kandidátky Pirátů do Evropského parlamentu?",array(1 => "Ivan Bartoš", "Václav Klaus", "Martin Brož"));
-        $form->addRadioList("otazka3", "Co chtějí Piráti prosadit?",array(1 => "Vstup Turecka do EU", "Okamžité zavedení eura", "Demokratizaci EU"));
-        $form->addRadioList("otazka4", "Ve kterém roce vznikla Česká pirátská strana?",array(1 => "1989", "1999", "2009"));
+        $form->addRadioList("otazka1", "Přijde ti v pořádku, že stát sleduje s kým si volá, jak dlouho, a kde se při tom nacházíš?",
+            array(1 => "Ano, na prostý lidi musí být přísnost.", "No a co, kdo nedělá nic špatnýho, nemá co skrývat.", "Vadí mi to, stát mě nemá co šmírovat a chci to změnit."));
+        $form->addRadioList("otazka2", "Jsi spokojený s tím jak se u nás používají evropské dotace?",
+            array(1 => "Ano, každé ráno se jedu projet na cyklostezku odnikud nikam", "Samozřejmě, tatínek má poradenskou firmu","Ne a chci to změnit"));
+        $form->addRadioList("otazka3", "Přijde ti v pořádku, že mezinárodní smlouvy nejprve v utajení připraví firmy, kterých se týkají a až potom se k nim dostanou zvolení poslanci?",
+            array(1 => "Ano, aspoň je připravují odborníci", "Tak to přece není, jste paranoidní", "Nepřijde a chci to změnit"));
+        $form->addRadioList("otazka4", "Myslíš si, že o svobodě Internetu mají rozhodovat lidé, kteří uvázli ve století potrubní pošty?",
+            array(1 => "Ano, určitě na to mají poradce", "Já bych ty Internety zakázal(a), každého jenom otravují", "Ne, Internet změnil svět a lidi co mu rozumí, jsou v evropském parlamentu potřeba."));
         $form->addSubmit("send_quiz", "Odpovědět na otázky");
 
         $renderer = $form->getRenderer();
@@ -76,13 +80,13 @@ class HomepagePresenter extends BasePresenter
     public function quiz($form) {
         $vals = $form->getValues();
         $body = 0;
-        if ($vals["otazka1"]==2) $body++;
-        if ($vals["otazka2"]==1) $body++;
+        if ($vals["otazka1"]==3) $body++;
+        if ($vals["otazka2"]==3) $body++;
         if ($vals["otazka3"]==3) $body++;
         if ($vals["otazka4"]==3) $body++;
         $this->section->body = $body;
         if ($body>2) {
-            $this->flashMessage("Gratuluji, prošel jsi vědomostním testem pro účast v soutěži. Nyní si vyber okrsek, ve kterém budeš dělat kampaň.");
+            $this->flashMessage("Gratulujeme, prošel jsi testem pro účast v soutěži. Nyní si vyber svůj soutěžní okrsek.");
         }
         $this->redirect("prihlaseni2");
 
