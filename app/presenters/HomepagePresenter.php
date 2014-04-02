@@ -167,7 +167,10 @@ class HomepagePresenter extends BasePresenter
         }
 
         if (empty($prihlaska) ) {
+            $vals['link'] = $this->link("//:Homepage:okrsek", array('kod' => $vals['okrsek']));
+
             $id = $this->prihlasky->add($vals);
+
             if (!empty($id)) {
                 $this->flashMessage("Vítej v soutěži, tvoje přihlášení proběhlo úspěšně. Aktivuj svůj účet bezplatným zavoláním na 222 703 223. Na e-mail ti přijdou podrobnější pokyny a materiály.");
             } else {
