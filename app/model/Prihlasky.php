@@ -52,7 +52,7 @@ class Prihlasky {
 
         @$this->mailer->send($mail);
 
-        return $this->db->getInsertId();
+        return $this->db->getInsertId('prihlasky_id_seq');
     }
     public function isLocked($kod) {
         return $this->db->fetchField("SELECT locked FROM prihlasky WHERE okrsek=? AND locked=true;",$kod);
