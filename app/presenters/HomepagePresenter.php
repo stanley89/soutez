@@ -60,7 +60,7 @@ class HomepagePresenter extends BasePresenter
         $form = new \Nette\Application\UI\Form();
         $form->addHidden("okrsek", $this->section->okrsek);
         $form->addText("jmeno", "Jméno a příjmení")->addRule(Form::FILLED, "Vyplň prosím jméno a příjmení.");
-        $form->addText("ulice", "Ulice a ČP")->addRule(Form::FILLED, "Vyplň prosím ulici a ČP.");
+        $form->addText("ulice", "Ulice a č.p.")->addRule(Form::FILLED, "Vyplň prosím ulici a ČP.");
         $form->addText("obec", "Obec")->addRule(Form::FILLED, "Vyplň prosím obec.");
         $form->addText("psc", "PSČ")->addRule(Form::FILLED, "Vyplň prosím PSČ.");
         $form->addText("telefon", "Telefon")->addRule(Form::FILLED, "Vyplň prosím telefon.")->addRule(Form::PATTERN, "Telefon musí mít 9 číslic.",'([0-9]\s*){9}');
