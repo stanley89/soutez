@@ -1,15 +1,14 @@
 {block h1}
-
+<h1>Mapa soutěžního volebního okrsku {$obec['nazev']} - {$okrsek['cislo']}</h1>
 {/block}
 {block content2}
-{dump $hranice}
     <script type="text/javascript" src="http://api4.mapy.cz/loader.js"></script>
     <script type="text/javascript">Loader.load();</script>
-        <div id="m" style="height:380px"></div>
+        <div id="m100" style="height:380px"></div>
 
         <script type="text/javascript">
         var center = SMap.Coords.fromWGS84(16, 50);
-        var m = new SMap(JAK.gel("m"), center, 4);
+        var m = new SMap(JAK.gel("m100"), center, 4);
         m.addDefaultLayer(SMap.DEF_BASE).enable();
         m.addDefaultControls();
 
@@ -21,17 +20,6 @@
         var mouse = new SMap.Control.Mouse(SMap.MOUSE_PAN | SMap.MOUSE_WHEEL | SMap.MOUSE_ZOOM); /* Ovládání myší */
         m.addControl(mouse);
 
-        function click(e, elm) { /* Došlo ke kliknutí, spočítáme kde */
-            var coords = SMap.Coords.fromEvent(e.data.event, m).toWGS84();
-
-                $.ajax( {
-                  type: "POST",
-                  url: {link mapa!},
-                  data: { longtitude: coords[0], latitude: coords[1]  },
-
-                } );
-        }
-        m.getSignals().addListener(window, "map-click", click); /* Při signálu kliknutí volat tuto funkci */
 
 
 

@@ -136,6 +136,9 @@ h1 {
     width: 50%;
     float:left;
 }
+#m100 {
+    width: 100%;
+}
 .velky_odkaz {
     float: left;
     width: 33%;
