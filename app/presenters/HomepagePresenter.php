@@ -268,4 +268,8 @@ class HomepagePresenter extends BasePresenter
             $this->redrawControl('mapa');
         }
     }
+    public function renderOkrsek($kod) {
+        $this->template->okrsek = $this->ruian->getOkrsek($kod);
+        $this->template->hranice = $this->ruian->convertHranice($this->ruian->getOkrsekHranice($kod));
+    }
 }
