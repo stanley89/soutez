@@ -266,7 +266,9 @@ class HomepagePresenter extends BasePresenter
         }
     }
     public function renderOkrsek($kod) {
-        $this->template->okrsek = $this->ruian->getOkrsek($kod);
+        $okrsek = $this->ruian->getOkrsek($kod);
+        $this->template->obec = $this->ruian->getObec($okrsek['obec_kod']);
+        $this->template->okrsek = $okrsek;
         $this->template->hranice = $this->ruian->convertHranice($this->ruian->getOkrsekHranice($kod));
     }
 }

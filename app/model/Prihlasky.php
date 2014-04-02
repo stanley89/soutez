@@ -42,8 +42,8 @@ class Prihlasky {
         $template->registerFilter(new \Nette\Latte\Engine);
         $template->registerHelperLoader('Nette\Templating\Helpers::loader');
         $template->vals = $vals;
-
         $mail = new \Nette\Mail\Message;
+
         $mail->setFrom('soutez@pirati.cz')
             ->setSubject("Potvrzení registrace do soutěže s Piráty do Evropy")
             ->addTo($vals['email'])
