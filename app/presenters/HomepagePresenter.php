@@ -27,8 +27,8 @@ class HomepagePresenter extends BasePresenter
         $form = new \Nette\Application\UI\Form();
         $form->addRadioList("otazka1", "Vadí ti, že stát sleduje s kým si volá, jak dlouho, a kde se při tom nacházíš?",
             array(1 => "Ne, na prostý lidi musí být přísnost.", "No a co, kdo nedělá nic špatnýho, nemá co skrývat. ", "Ano, vadí mi to, stát mě nemá co šmírovat a chci to změnit. "));
-        $form->addRadioList("otazka2", "Myslíš, že je potřeba úprava toho, jak se u nás používají evropské dotace?",
-            array(1 => "Ne, každé ráno se jedu projet na cyklostezku odnikud nikam, je tam krásně", "Vůbec ne, tatínek má poradenskou firmu","Ano, chci to změnit"));
+//        $form->addRadioList("otazka2", "Myslíš, že je potřeba úprava toho, jak se u nás používají evropské dotace?",
+//            array(1 => "Ne, každé ráno se jedu projet na cyklostezku odnikud nikam, je tam krásně", "Vůbec ne, tatínek má poradenskou firmu","Ano, chci to změnit"));
         $form->addRadioList("otazka3", "Vadí ti, že mezinárodní smlouvy nejprve v utajení připraví firmy, kterých se týkají a až potom se k nim dostanou zvolení poslanci?",
             array(1 => "Ne, aspoň je připravují odborníci", "Tak to přece není, jste paranoidní", "Ano, vadí a chci to změnit"));
         $form->addRadioList("otazka4", "Považuješ za problém, že o svobodě Internetu rozhodují lidé, kteří uvázli ve století potrubní pošty?",
@@ -81,7 +81,7 @@ class HomepagePresenter extends BasePresenter
         $vals = $form->getValues();
         $body = 0;
         if ($vals["otazka1"]==3) $body++;
-        if ($vals["otazka2"]==3) $body++;
+//        if ($vals["otazka2"]==3) $body++;
         if ($vals["otazka3"]==3) $body++;
         if ($vals["otazka4"]==3) $body++;
         $this->section->body = $body;
