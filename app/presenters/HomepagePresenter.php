@@ -86,7 +86,7 @@ class HomepagePresenter extends BasePresenter
         if ($vals["otazka4"]==3) $body++;
         $this->section->body = $body;
         if ($body>2) {
-            $this->flashMessage("Gratulujeme, prošel jsi testem pro účast v soutěži. Nyní si vyber svůj soutěžní okrsek.");
+            $this->flashMessage("Gratulujeme, máš pirátské názory na klíčová témata naší kampaně. Nyní si vyber svůj soutěžní okrsek.");
         }
         $this->redirect("prihlaseni2");
 
@@ -182,7 +182,7 @@ class HomepagePresenter extends BasePresenter
     public function actionPrihlaseni2() {
         if ($this->section->body>2) {
         } else {
-            $this->flashMessage("Tvoje odpovědi nestačí pro účast v soutěži. Můžeš to ale zkusit znovu.");
+            $this->flashMessage("Tvé názory na naše klíčová témata bohužel nekorespondují s názory Pirátů, pokud je změníš, můžeš to zkusit znovu.");
             $this->redirect("prihlaseni");
         }
         //$this->hranice = $this->ruian->getStatHranice();
