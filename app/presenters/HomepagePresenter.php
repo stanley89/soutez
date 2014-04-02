@@ -162,14 +162,11 @@ class HomepagePresenter extends BasePresenter
     public function address($form) {
         $vals = $form->getValues();
         $prihlaska = $this->prihlasky->getByTelefon($vals['telefon']);
-        $prihlaska2 = $this->prihlasky->getByEmail($vals['email']);
         if (!empty($prihlaska)) {
             $form['telefon']->addError("Zadané telefonní číslo už je v soutěži zaregistrováno.");
         }
-        if (!empty($prihlaska2)) {
-            $form['email']->addError("Zadaný e-mail je už v soutěži zaregistrován.");
-        }
-        if (empty($prihlaska) && empty($prihlaska2)) {
+
+        if (empty($prihlaska) ) {
             $id = $this->prihlasky->add($vals);
             if (!empty($id)) {
                 $this->flashMessage("Tvoje přihlášení do soutěže proběhlo úspěšně. Na e-mail ti přijdou podrobnější pokyny a materiály.");
