@@ -266,4 +266,7 @@ class HomepagePresenter extends BasePresenter
             $this->redrawControl('mapa');
         }
     }
+	public function actionError() {
+		throw new \Exception();
+	}
 }

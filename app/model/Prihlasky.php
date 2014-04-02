@@ -13,7 +13,7 @@ class Prihlasky {
     private $db;
     private $mailer;
 
-    public function __construct(\Nette\Database\Context $db,  \Nette\Mail\SendmailMailer $mailer) {
+    public function __construct(\Nette\Database\Context $db,  \Nette\Mail\SmtpMailer $mailer) {
         $this->db = $db;
         $this->mailer = $mailer;
     }
@@ -55,7 +55,7 @@ class Prihlasky {
         return $this->db->getInsertId();
     }
     public function isLocked($kod) {
-        return $this->db->fetchField("SELECT locked FROM prihlasky WHERE okrsek=? AND locked=1;",$kod);
+        return $this->db->fetchField("SELECT locked FROM prihlasky WHERE okrsek=? AND locked=true;",$kod);
     }
     public function getByEmail($email) {
         return $this->db->fetch("SELECT * FROM prihlasky WHERE email=?;",$email);
@@ -64,7 +64,7 @@ class Prihlasky {
         return $this->db->fetch("SELECT * FROM prihlasky WHERE telefon=?;",$telefon);
     }
     public function activate($id) {
-        $this->db->query("UPDATE prihlasky SET confirmed=1 WHERE confirmed=0 AND id=?;",$id);
+        $this->db->query("UPDATE prihlasky SET confirmed=true WHERE confirmed=false AND id=?;",$id);
     }
     public function phoneCall($telefon) {
         $prihlaska = $this->getByTelefon($telefon);
@@ -92,6 +92,6 @@ class Prihlasky {
         }
     }
     public function getConfirmedCount() {
-        return $this->db->fetchField("SELECT count(id) FROM prihlasky WHERE confirmed=1;");
+        return $this->db->fetchField("SELECT count(id) FROM prihlasky WHERE confirmed=true;");
     }
 }
