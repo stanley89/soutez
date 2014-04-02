@@ -13,7 +13,7 @@ class Prihlasky {
     private $db;
     private $mailer;
 
-    public function __construct(\Nette\Database\Context $db,  \Nette\Mail\SendmailMailer $mailer) {
+    public function __construct(\Nette\Database\Context $db,  \Nette\Mail\SmtpMailer $mailer) {
         $this->db = $db;
         $this->mailer = $mailer;
     }
@@ -36,7 +36,7 @@ class Prihlasky {
 
 
         );
-//        $this->db->query("INSERT INTO prihlasky ",$arr);
+        $this->db->query("INSERT INTO prihlasky ",$arr);
 
         $template = new \Nette\Templating\FileTemplate(__DIR__.'/@email.latte');
         $template->registerFilter(new \Nette\Latte\Engine);
@@ -95,6 +95,6 @@ class Prihlasky {
         return $this->db->fetchField("SELECT count(id) FROM prihlasky WHERE confirmed=true;");
     }
     public function getLockedCount() {
-        return $this->db->fetchField("SELECT count(id) FROM prihlasky WHERE locked=1;");
+        return $this->db->fetchField("SELECT count(id) FROM prihlasky WHERE locked=true;");
     }
 }
