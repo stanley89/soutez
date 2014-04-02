@@ -169,7 +169,7 @@ class HomepagePresenter extends BasePresenter
         if (empty($prihlaska) ) {
             $id = $this->prihlasky->add($vals);
             if (!empty($id)) {
-                $this->flashMessage("Tvoje přihlášení do soutěže proběhlo úspěšně. Na e-mail ti přijdou podrobnější pokyny a materiály.");
+                $this->flashMessage("Vítej v soutěži, tvoje přihlášení proběhlo úspěšně. Aktivuj svůj účet bezplatným zavoláním na 222 703 223. Na e-mail ti přijdou podrobnější pokyny a materiály.");
             } else {
                 $this->flashMessage("Přihlášení se bohužel nezdařilo. Když všechno selže, napiš na stanislav.stipl@pirati.cz");
             }
