@@ -73,7 +73,7 @@ html.js .jshidden {
     left:       0;
     height:     100%;
     width:      100%;
-    background: rgba( 255, 255, 255, .8 )
+    background: rgba( 0, 0, 0, .8 )
     url('http://i.stack.imgur.com/FhHRx.gif')
     50% 50%
     no-repeat;
@@ -180,4 +180,7 @@ h1 {
 }
 a.velky_odkaz {
     text-decoration: none;
+}
+.nobottom {
+    margin-bottom: 0px;
 }
