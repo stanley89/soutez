@@ -182,7 +182,7 @@ class HomepagePresenter extends BasePresenter
     public function actionPrihlaseni2() {
         if ($this->section->body>2) {
         } else {
-            $this->flashMessage("Tvé názory na naše klíčová témata bohužel nekorespondují s názory Pirátů, pokud je změníš, můžeš to zkusit znovu.");
+            $this->flashMessage("Tvé názory na naše klíčová témata bohužel nekorespondují s názory Pirátů. Pokud je změníš, můžeš to zkusit znovu.");
             $this->redirect("prihlaseni");
         }
         //$this->hranice = $this->ruian->getStatHranice();
