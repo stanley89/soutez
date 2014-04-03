@@ -178,3 +178,6 @@ h1 {
 .size {
     font-size: 120%;
 }
+a.velky_odkaz {
+    text-decoration: none;
+}
