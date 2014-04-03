@@ -169,3 +169,10 @@ h1 {
     width: 400px;
     float: left;
 }
+.center {
+    text-align: justify;
+}
+
+.size {
+    font-size: 120%;
+}
