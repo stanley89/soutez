@@ -5,9 +5,11 @@ body {
 	color: white;
 	background-color: #3d2f84;
 }
-
-a, a:hover {
+#menu a {
     text-decoration: none;
+
+}
+a, a:hover {
     color:white;
 }
 a:hover {
