@@ -73,7 +73,7 @@ html.js .jshidden {
     left:       0;
     height:     100%;
     width:      100%;
-    background: rgba( 255, 255, 255, .8 )
+    background: rgba( 0, 0, 0, .8 )
     url('http://i.stack.imgur.com/FhHRx.gif')
     50% 50%
     no-repeat;
@@ -181,3 +181,9 @@ h1 {
 a.velky_odkaz {
     text-decoration: none;
 }
+<<<<<<< HEAD:wwwroot/css/screen.css
+=======
+.nobottom {
+    margin-bottom: 0px;
+}
+>>>>>>> 3c1e44093d385dd7d0021d7df0b99f93b8d5e34e:www/css/screen.css
