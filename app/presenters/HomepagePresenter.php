@@ -60,9 +60,9 @@ class HomepagePresenter extends BasePresenter
         $form = new \Nette\Application\UI\Form();
         $form->addHidden("okrsek", $this->section->okrsek);
         $form->addText("jmeno", "Jméno a příjmení")->addRule(Form::FILLED, "Vyplň prosím jméno a příjmení.");
-        $form->addText("ulice", "Ulice a č.p.")->addRule(Form::FILLED, "Vyplň prosím ulici a ČP.");
-        $form->addText("obec", "Obec")->addRule(Form::FILLED, "Vyplň prosím obec.");
-        $form->addText("psc", "PSČ")->addRule(Form::FILLED, "Vyplň prosím PSČ.");
+        $form->addText("ulice", "Ulice a č.p.");//->addRule(Form::FILLED, "Vyplň prosím ulici a ČP.");
+        $form->addText("obec", "Obec");//->addRule(Form::FILLED, "Vyplň prosím obec.");
+        $form->addText("psc", "PSČ");//->addRule(Form::FILLED, "Vyplň prosím PSČ.");
         $form->addText("telefon", "Telefon")->addRule(Form::FILLED, "Vyplň prosím telefon.")->addRule(Form::PATTERN, "Telefon musí mít 9 číslic.",'([0-9]\s*){9}');
         $form->addText("email", 'E-mail')->addRule(Form::FILLED, "Vyplň prosím e-mail.")
             ->addRule(Form::EMAIL, "Vyplň prosím platný e-mail.");
@@ -172,7 +172,7 @@ class HomepagePresenter extends BasePresenter
             $id = $this->prihlasky->add($vals);
 
             if (!empty($id)) {
-                $this->flashMessage("Vítej v soutěži, tvoje přihlášení proběhlo úspěšně. Aktivuj svůj účet bezplatným zavoláním na 222 703 223. Na e-mail ti přijdou podrobnější pokyny a materiály.");
+                $this->flashMessage("Vítej v soutěži, tvoje přihlášení proběhlo úspěšně. Aktivuj svůj účet bezplatným prozvoněním čísla 222 703 223, poslechni si vyzváněcí melodii, dostaneš instrukce k soutěži, neboj, automat, který volající obsluhuje ti to nezvedne. Na zadaný e-mail ti přijdou podrobnější pokyny a materiály.");
             } else {
                 $this->flashMessage("Přihlášení se bohužel nezdařilo. Když všechno selže, napiš na stanislav.stipl@pirati.cz");
             }
