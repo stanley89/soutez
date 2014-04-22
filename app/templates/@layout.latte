@@ -61,9 +61,15 @@
     </a>
     <div id="content">
     <div id="content-left">
-<a class="velky_odkaz" href="http://volimpiraty.eu" target="_blank" >Web<br />volimpiraty.eu</a>
-<a class="velky_odkaz" n:href="prihlaseni">Přihlaš se<br /> do soutěže</a>
-<a class="velky_odkaz" href="http://www.pirati.cz" target="_blank">Web<br /> Pirati.cz</a>
+<a class="velky_odkaz" n:href="prihlaseni">
+<img src="{$basePath}/images/left/prihlasit.png" alt="Přihlášení do soutěže">
+</a>
+<a class="velky_odkaz" href="http://volimpiraty.eu" target="_blank" >
+<img src="{$basePath}/images/left/plujeme.png" alt="Plujeme do Evropského parlamentu">
+</a>
+<a class="velky_odkaz" href="http://www.pirati.cz" target="_blank">
+<img src="{$basePath}/images/left/piraticz.png" alt="Web České pirátské strany">
+</a>
 
 {*
 <div id="fb-root"></div>
@@ -80,7 +86,7 @@
     <script>!function(d,s,id){ var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){ js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 *}
     </div>
-    <div id=content-right">
+    <div id="content-right">
     {block content}
     <div class="p20p">
     {block h1}{/block}
