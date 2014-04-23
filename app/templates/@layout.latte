@@ -60,12 +60,40 @@
 
     </a>
     <div id="content">
+    <div id="content-left">
+<a class="velky_odkaz" n:href="prihlaseni">
+<img src="{$basePath}/images/left/prihlasit.png" alt="Přihlášení do soutěže">
+</a>
+<a class="velky_odkaz" href="http://volimpiraty.eu" target="_blank" >
+<img src="{$basePath}/images/left/plujeme.png" alt="Plujeme do Evropského parlamentu">
+</a>
+<a class="velky_odkaz" href="http://www.pirati.cz" target="_blank">
+<img src="{$basePath}/images/left/piraticz.png" alt="Web České pirátské strany">
+</a>
+
+{*
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/cs_CZ/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<div class="fb-like-box" data-href="https://www.facebook.com/ceskapiratskastrana?ref=ts&amp;fref=ts" data-width="425" data-height="250" data-colorscheme="light" data-show-faces="true" data-header="false" data-stream="false" data-show-border="true"></div>
+
+<a class="twitter-timeline"  href="https://twitter.com/PiratidoEP"  data-widget-id="451278761590136834">Tweets by @PiratidoEP</a>
+    <script>!function(d,s,id){ var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){ js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+*}
+    </div>
+    <div id="content-right">
     {block content}
     <div class="p20p">
     {block h1}{/block}
 
  	<div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
 	{include content2}
+	</div>
     </div>
     {/block}
     </div>
