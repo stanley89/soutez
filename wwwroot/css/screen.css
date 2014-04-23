@@ -183,17 +183,18 @@ h1, .h1 {
 }
 .fb-like-box {
     background-color: white;
-    margin: 20px;
+    margin-top: 20px;
     float: left;
+    width: 400px;
 }
 .twitter-timeline {
-    width: 425px;
-    margin: 20px;
-    float: left;
+    width: 430px;
+    margin-top: 20px;
+    float: right;
     height: 250px;
 }
 .ceny_blok {
-    width: 400px;
+    width: 430px;
     float: left;
 }
 .center {
