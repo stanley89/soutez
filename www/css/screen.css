@@ -1,4 +1,5 @@
-@font-face {
+
+/*@font-face {
     font-family: 'm_1cregular';
     src: url('mplus-1c-medium-webfont.eot');
     src: url('mplus-1c-medium-webfont.eot?#iefix') format('embedded-opentype'),
@@ -8,6 +9,9 @@
     font-weight: normal;
     font-style: normal;
 
+}*/
+html {
+    min-width:1200px;
 }
 body {
 	font-size: 15px;
