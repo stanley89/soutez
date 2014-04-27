@@ -113,7 +113,7 @@ class HomepagePresenter extends BasePresenter
 			    $form['obec']->setValue(key($obce));
 		    }
 		    $form['obec']->setAttribute('hidden',false);
-            $this->hranice = $this->ruian->getOkresHranice($vals['okres']);
+            //$this->hranice = $this->ruian->getOkresHranice($vals['okres']);
             $vals = $form->getValues();
         }
         if (!empty($vals['obec'])) {
