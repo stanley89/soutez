@@ -101,7 +101,7 @@ class HomepagePresenter extends BasePresenter
 			$form['okres']->setValue(key($okresy));
 		}
 		$form['okres']->setAttribute('hidden',false);
-              //  $this->hranice = $this->ruian->getVuscHranice($vals['vusc']);
+                $this->hranice = $this->ruian->getVuscHranice($vals['vusc']);
 
                 $vals = $form->getValues();
         }
@@ -113,7 +113,7 @@ class HomepagePresenter extends BasePresenter
 			    $form['obec']->setValue(key($obce));
 		    }
 		    $form['obec']->setAttribute('hidden',false);
-            //$this->hranice = $this->ruian->getOkresHranice($vals['okres']);
+            $this->hranice = $this->ruian->getOkresHranice($vals['okres']);
             $vals = $form->getValues();
         }
         if (!empty($vals['obec'])) {
