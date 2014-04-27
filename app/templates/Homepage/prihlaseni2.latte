@@ -77,12 +77,14 @@ $('#frm-prihlaseni2 select').change(function() {
 <script type="text/javascript">
 layer.removeAll();
 var points2 = [
+{*
 {ifset $hranice}
 {foreach $hranice as $bod}
 {? $coords = explode(" ",$bod)}
     SMap.Coords.fromWGS84({$coords[0]}, {$coords[1]}),
     {/foreach}
 {/ifset}
+*}
 ];
 {if !empty($okrsek)}
 var options2 = {

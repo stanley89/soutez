@@ -13,7 +13,7 @@ class Prihlasky {
     private $db;
     private $mailer;
 
-    public function __construct(\Nette\Database\Context $db,  \Nette\Mail\SmtpMailer $mailer) {
+    public function __construct(\Nette\Database\Context $db,  \Nette\Mail\IMailer $mailer) {
         $this->db = $db;
         $this->mailer = $mailer;
     }
