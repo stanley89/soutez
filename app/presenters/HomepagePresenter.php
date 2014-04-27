@@ -101,7 +101,7 @@ class HomepagePresenter extends BasePresenter
 			$form['okres']->setValue(key($okresy));
 		}
 		$form['okres']->setAttribute('hidden',false);
-                $this->hranice = $this->ruian->getVuscHranice($vals['vusc']);
+              //  $this->hranice = $this->ruian->getVuscHranice($vals['vusc']);
 
                 $vals = $form->getValues();
         }
