@@ -17,7 +17,8 @@ nette:
 		errorPresenter: Error
 		mapping:
 			*: App\*Module\Presenters\*Presenter
-
+	debugger:
+		email: stanislav.stipl@pirati.cz
 	session:
 		expiration: 14 days
 

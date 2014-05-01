@@ -102,7 +102,7 @@ html.js .jshidden {
     height:     100%;
     width:      100%;
     background: rgba( 0, 0, 0, .5 )
-    url('http://i.stack.imgur.com/FhHRx.gif')
+    url('../images/spinner.gif')
     50% 50%
     no-repeat;
 }

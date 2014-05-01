@@ -20,6 +20,7 @@ class RouterFactory
 	public function createRouter()
 	{
 		$router = new RouteList();
+//Route::$defaultFlags = Route::SECURED;
         $router[] = new Route('service/<action>[/<id>]', 'Service:default');
         $router[] = new Route('<action>[/<id>]', 'Homepage:default');
 
