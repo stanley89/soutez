@@ -180,6 +180,8 @@ class HomepagePresenter extends BasePresenter
         }
     }
     public function actionPrihlaseni2() {
+        $this->redirect("prihlaseni");
+
         if ($this->section->body>2) {
         } else {
             $this->flashMessage("Tvé názory na naše klíčová témata bohužel nekorespondují s názory Pirátů. Pokud je změníš, můžeš to zkusit znovu.");
@@ -217,6 +219,8 @@ class HomepagePresenter extends BasePresenter
         }
     }
     public function actionPrihlaseni3() {
+        $this->redirect("prihlaseni");
+
         $okrsek = $this->ruian->getOkrsek($this->section->okrsek);
         $obec = $this->ruian->getObec($okrsek['obec_kod']);
         $this->template->okrsek = $okrsek;
