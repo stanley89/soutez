@@ -281,7 +281,7 @@ class HomepagePresenter extends BasePresenter
     public function actionAddOkrsky() {
         $prihlasky = $this->prihlasky->getAll();
         foreach ($prihlasky as $prihlaska) {
-            $okrsek = $this->ruian->getOkrsek($prihlaska['okrsek']));
+            $okrsek = $this->ruian->getOkrsek($prihlaska['okrsek']);
             $obec = $this->ruian->getObec($okrsek['obec_kod']);
             $this->prihlasky->setOkrsek($prihlaska['id'],$okrsek['obec'],$okrsek['cislo']);
 
