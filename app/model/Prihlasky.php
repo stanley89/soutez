@@ -102,6 +102,6 @@ class Prihlasky {
     }
     public function setOkrsek($id, $okrsek_obec,$okrsek_cislo) {
         $arr = array("okrsek_obec" => $okrsek_obec, "okrsek_cislo" => $okrsek_cislo);
-        $this->db->query("UPDATE prihlasky SET ",$arr," WHERE id=%i;",$id);
+        $this->db->query("UPDATE prihlasky SET ",$arr," WHERE id=?;",$id);
     }
 }
