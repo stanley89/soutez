@@ -97,4 +97,11 @@ class Prihlasky {
     public function getLockedCount() {
         return $this->db->fetchField("SELECT count(id) FROM prihlasky WHERE locked=true;");
     }
+    public function getAll() {
+        return $this->db->fetchAll("SELECT * FROM prihlasky;");
+    }
+    public function setOkrsek($id, $okrsek_obec,$okrsek_cislo) {
+        $arr = array("okrsek_obec" => $okrsek_obec, "okrsek_cislo" => $okrsek_cislo);
+        $this->db->query("UPDATE prihlasky SET ",$arr," WHERE id=%i;",$id);
+    }
 }
