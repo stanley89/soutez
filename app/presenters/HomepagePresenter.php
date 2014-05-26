@@ -283,7 +283,7 @@ class HomepagePresenter extends BasePresenter
         foreach ($prihlasky as $prihlaska) {
             $okrsek = $this->ruian->getOkrsek($prihlaska['okrsek']);
             $obec = $this->ruian->getObec($okrsek['obec_kod']);
-            $this->prihlasky->setOkrsek($prihlaska['id'],$okrsek['obec'],$okrsek['cislo']);
+            $this->prihlasky->setOkrsek($prihlaska['id'],$obec['nazev'],$okrsek['cislo']);
 
         }
         $this->terminate();
