@@ -1,0 +1,20 @@
+nette:
+	database:
+		default:
+			dsn: 'mysql:host=localhost;dbname='
+			user:
+			password:
+		ruian:
+			dsn: 'mysql:host=localhost;dbname='
+			user:
+			password:
+
+	mailer:
+		smtp: true
+		host:
+		port: 25
+		username:
+		password:
+php:
+	date.timezone: Europe/Prague
+
