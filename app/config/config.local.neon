@@ -5,12 +5,12 @@ nette:
 			user:
 			password:
 		ruian:
-			dsn: 'mysql:host=localhost;dbname='
+			dsn: 'pgsql:host=localhost;dbname='
 			user:
 			password:
 
 	mailer:
-		smtp: true
+		smtp: false
 		host:
 		port: 25
 		username:
