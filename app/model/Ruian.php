@@ -29,11 +29,11 @@ class Ruian {
     }
     public function getOkrsekPairs($obec_kod, $ulice_kod) {
         if (empty($ulice_kod)) {
-                return $this->db->fetchPairs("SELECT rn_volebni_okrsek.kod,rn_volebni_okrsek.cislo FROM rn_volebni_okrsek
+                return $this->db->fetchPairs("SELECT rn_vo.kod,rn_vo.cislo FROM rn_vo
                 WHERE obec_kod=?
                 ORDER BY cislo;",$obec_kod);
         } else {
-                return $this->db->fetchPairs("SELECT o.kod,o.cislo FROM rn_ulice u, rn_volebni_okrsek o
+                return $this->db->fetchPairs("SELECT o.kod,o.cislo FROM rn_ulice u, rn_vo o
                 WHERE o.obec_kod=? AND u.kod=? AND ST_Intersects(u.definicni_cara,o.hranice)
                 ORDER BY cislo;",$obec_kod,$ulice_kod);
         }
@@ -63,12 +63,12 @@ class Ruian {
     }
     public function getOkrsekHranice($okrsek_kod) {
         return $this->db->fetchField("SELECT ST_AsText(ST_Transform(hranice, 4326))
-              FROM rn_volebni_okrsek
+              FROM rn_vo
               WHERE kod = ?;",$okrsek_kod);
     }
     public function getOkrskyHraniceUlice($ulice_kod) {
         return $this->db->fetchField("SELECT ST_ASText(ST_Transform(ST_Union(o.hranice), 4326))
-              FROM rn_volebni_okrsek o, rn_ulice u
+              FROM rn_vo o, rn_ulice u
               WHERE ST_Intersects(o.hranice, u.definicni_cara) AND u.kod=?;
         ",$ulice_kod);
     }
@@ -80,7 +80,7 @@ class Ruian {
         return $hranice;
     }
     public function getOkrsek($kod) {
-        return $this->db->fetch("SELECT * FROM rn_volebni_okrsek WHERE kod=?;",$kod);
+        return $this->db->fetch("SELECT * FROM rn_vo WHERE kod=?;",$kod);
     }
     public function getObec($kod) {
         return $this->db->fetch("SELECT * FROM rn_obec WHERE kod=?;",$kod);
@@ -92,6 +92,7 @@ class Ruian {
         return $this->db->fetch("SELECT * FROM rn_vusc WHERE kod=?;",$kod);
     }
     public function getOkrsekByGps($longtitude, $latitude) {
-        return $this->db->fetch("SELECT o.* FROM rn_volebni_okrsek o WHERE ST_Contains(o.hranice, ST_Transform(st_setsrid(ST_GeomFromText('POINT(".$longtitude." ".$latitude.")'),4326),5514) )");
+        return $this->db->fetch("SELECT o.* FROM rn_vo o WHERE ST_Contains(o.hranice, ST_Transform(st_setsrid(ST_GeomFromText('POINT(".$longtitude." ".$latitude.")'),4326),5514) )");
+
     }
 } 
